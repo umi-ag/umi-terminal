@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { NumericFormat} from 'react-number-format';
 import umiLogo from '../../assets/umi.jpeg';
 
-export const Swap: React.FC<{ wallet?: any }> = (props) => {
+export const Swap: React.FC<{ wallet?: any }> = (_props) => {
   const [val, setVal] = useState(0);
 
   return (
