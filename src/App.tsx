@@ -4,7 +4,9 @@ import { Swap } from './components/Swap';
 function App() {
   return (
     <>
-      <Swap wallet={null}></Swap>
+      <div className="w-[600px]">
+        <Swap wallet={null}></Swap>
+      </div>
     </>
   );
 }
