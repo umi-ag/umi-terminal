@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { NumericFormat } from 'react-number-format';
 import umiLogo from '../../assets/umi.jpeg';
+import refreshIcon from '../../assets/refresh.svg';
 import './style.scss';
 
 export const InputBase: React.FC = (props) => {
@@ -23,7 +24,9 @@ export const Swap: React.FC<{ wallet?: any }> = (_props) => {
               <option value="sui">Sui</option>
               <option value="aptos">Aptos</option>
             </select>
-            <button className="w-8 h-8 rounded-full outline-none grid place-items-center border-[1px] bg-slate-50">🔃</button>
+            <button className="w-8 h-8 rounded-full outline-none grid place-items-center border-[1px] bg-slate-50">
+              <img src={refreshIcon} alt="🔃" className="w-6 h-6" />
+            </button>
             <button className="h-8 px-2 rounded-full outline-none border-[1px] bg-slate-50">0.5%</button>
           </div>
         </div>
