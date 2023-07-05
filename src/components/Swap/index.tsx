@@ -18,7 +18,7 @@ export const Swap: React.FC<{ wallet?: any }> = (_props) => {
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center justify-between gap-4"><img src={umiLogo} alt="umi logo" className="w-8 h-8 rounded-full" /> Umi.ag</div>
           <div className="flex justify-between gap-4">
-            <select className="h-8 px-2 rounded-full outline-none border-[1px] bg-slate-50">
+            <select className="h-8 px-2 rounded-full outline-none cursor-pointer border-[1px] bg-slate-50">
               <option disabled selected>Network</option>
               <option value="sui">Sui</option>
               <option value="aptos">Aptos</option>
@@ -31,7 +31,10 @@ export const Swap: React.FC<{ wallet?: any }> = (_props) => {
         <div className="px-4 py-2 bg-slate-100 border-slate-200 border-[1px] rounded-xl">
           <p className="mb-2 text-left text-gray-500">From</p>
           <div className="flex items-center justify-between mb-2">
-            <span className="text-2xl">SUI</span>
+            <select className="text-2xl bg-transparent outline-none cursor-pointer min-w-[4em]">
+              <option value="sui">SUI</option>
+              <option value="usdc">USDC</option>
+            </select>
             <NumericFormat
               value={val}
               onValueChange={val => setVal(val.floatValue ?? 0)}
@@ -48,7 +51,10 @@ export const Swap: React.FC<{ wallet?: any }> = (_props) => {
         <div className="px-4 py-2 mb-4 bg-white border-slate-200 border-[1px] rounded-xl">
           <p className="mb-2 text-left text-gray-500">To</p>
           <div className="flex items-center justify-between mb-2">
-            <span className="text-2xl">USDC</span>
+            <select className="text-2xl bg-transparent outline-none cursor-pointer min-w-[4em]">
+              <option value="sui">SUI</option>
+              <option value="usdc">USDC</option>
+            </select>
             <NumericFormat
               customInput={InputBase}
               disabled
@@ -57,7 +63,7 @@ export const Swap: React.FC<{ wallet?: any }> = (_props) => {
           <p className="text-left text-gray-500">USD Coin</p>
         </div>
 
-        <button className="w-full p-4 text-2xl rounded-full bg-emerald-300">Swap</button>
+        <button className="w-full p-4 text-2xl rounded-full bg-emerald-300 hover:bg-emerald-400">Swap</button>
       </div>
     </>
   );
