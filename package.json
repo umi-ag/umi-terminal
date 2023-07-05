@@ -24,6 +24,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@mysten/sui.js": "^0.37.1",
+    "@umi-ag/sui-sdk": "^0.202306.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-number-format": "^5.2.2"
