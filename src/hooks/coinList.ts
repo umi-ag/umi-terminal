@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import type { Chain } from '../type';
+import type { Chain, CoinProfile } from '../type';
 
 export const useSuiCoinList = () => {
   const query = useQuery({
@@ -26,7 +26,7 @@ export const useCoinList = ({
 };
 
 // TODO: Remove this
-const suiCoinList = [
+const suiCoinList: CoinProfile[] = [
   {
     'coinType': '0x2::sui::SUI',
     'decimals': 9,

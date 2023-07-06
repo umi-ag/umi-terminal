@@ -12,3 +12,13 @@ export const Network = {
   DEVNET: 'devnet',
 } as const;
 export type Network = ValueOf<typeof Network>;
+
+export type CoinProfile = {
+  coinType: string;
+  decimals: number;
+  name: string;
+  symbol: string;
+  description: string;
+  iconUrl: string| null;
+  id: string;
+};
