@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "@mysten/sui.js": "^0.34.1",
+    "@mysten/wallet-kit": "^0.4.12",
     "@react-hook/debounce": "^4.0.0",
     "@tanstack/query-core": "^4.29.19",
     "@tanstack/react-query": "^4.29.19",

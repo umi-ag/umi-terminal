@@ -27,7 +27,7 @@ export type SwapWidgetProps = {
   provider?: JsonRpcProvider;
 };
 
-export const UmiSwapWidgetContent: React.FC<SwapWidgetProps> = (props) => {
+const UmiSwapWidgetContent: React.FC<SwapWidgetProps> = (props) => {
   const [chain, setChain] = useState<Chain>('sui');
   const balances = useBalance({
     chain,
@@ -37,6 +37,10 @@ export const UmiSwapWidgetContent: React.FC<SwapWidgetProps> = (props) => {
   const coinList = useCoinList({
     chain,
   });
+
+  const currentBalance = () => new Decimal(balances.data?.find(b => b.coinType === sourceCoin.coinType)?.totalBalance ?? 0)
+    .div(10 ** sourceCoin.decimals)
+    .toNumber();
 
   const initialCoin = useMemo(() => initialCoinSelection[chain], [chain]);
   const [sourceCoin, setSourceCoinInner] = useState<CoinProfile>(initialCoin.source);
@@ -146,7 +150,7 @@ export const UmiSwapWidgetContent: React.FC<SwapWidgetProps> = (props) => {
           <span className="text-left text-gray-500">From</span>
           {
             balances.data && <button className="px-2 py-1 text-sm text-gray-100 bg-blue-400 rounded-md">
-              Max: {balances.data.find(b => b.coinType === sourceCoin.coinType)?.totalBalance.toFixed(4) ?? 0}
+              Max: {currentBalance()}
             </button>
           }
         </div>
