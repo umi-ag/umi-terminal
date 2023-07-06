@@ -54,6 +54,7 @@ const UmiSwapWidgetContent: React.FC<SwapWidgetProps> = (props) => {
     setSourceCoinInner(coin);
     setQuoteQuery({
       ...quoteQuery,
+      sourceAmount: new Decimal(sourceVolume).mul(10 ** coin.decimals).toNumber(),
       sourceCoin: coin.coinType,
     });
   };
@@ -69,9 +70,14 @@ const UmiSwapWidgetContent: React.FC<SwapWidgetProps> = (props) => {
   };
 
   const switchCoin = () => {
-    const tmp = sourceCoin;
-    setSourceCoin(targetCoin.coinType);
-    setTargetCoin(tmp.coinType);
+    setSourceCoinInner(targetCoin);
+    setTargetCoinInner(sourceCoin);
+    setQuoteQuery({
+      ...quoteQuery,
+      sourceAmount: new Decimal(sourceVolume).mul(10 ** targetCoin.decimals).toNumber(),
+      sourceCoin: targetCoin.coinType,
+      targetCoin: sourceCoin.coinType,
+    });
   };
 
   const [sourceVolume, setSourceVolumeInner] = useState<number>(0);
@@ -190,7 +196,7 @@ const UmiSwapWidgetContent: React.FC<SwapWidgetProps> = (props) => {
             customInput={InputBase}
           />
         </div>
-        <p className="text-left text-gray-500">Sui</p>
+        <p className="text-left text-gray-500">{sourceCoin?.name}</p>
       </div>
 
       <div className="flex items-center justify-center p-2">
@@ -218,7 +224,7 @@ const UmiSwapWidgetContent: React.FC<SwapWidgetProps> = (props) => {
             disabled
           />
         </div>
-        <p className="text-left text-gray-500">USD Coin</p>
+        <p className="text-left text-gray-500">{targetCoin?.name}</p>
       </div>
 
       <p className="h-4 px-2 mb-4 text-gray-500">{routeDigest()}</p>
