@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import React, { useMemo, useState } from 'react';
 import { NumericFormat } from 'react-number-format';
 import umiLogo from '../../assets/umi.jpeg';
@@ -8,6 +9,9 @@ import { useBalance } from '../../hooks/balance';
 import type { Chain, CoinProfile } from '../../type';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import { initialCoinSelection, useCoinList } from '../../hooks/coinList';
+import { useQuoteApi, useQuoteQuery } from '../../hooks/quoteApi';
+import { buildTransactionBlockForUmiAgSwap } from '@umi-ag/sui-sdk';
+import Decimal from 'decimal.js';
 
 export const InputBase: React.FC = (props) => {
   return (
@@ -40,20 +44,82 @@ export const UmiSwapWidgetContent: React.FC<SwapWidgetProps> = (props) => {
 
   const setSourceCoin = (coinType: string) => {
     const coin = coinList.data?.find(coin => coin.coinType === coinType);
-    if (coin) setSourceCoinInner(coin);
+    if (!coin) return;
+    setSourceCoinInner(coin);
+    setQuoteQuery({
+      ...quoteQuery,
+      sourceCoin: coin.coinType,
+    });
   };
+
   const setTargetCoin = (coinType: string) => {
     const coin = coinList.data?.find(coin => coin.coinType === coinType);
-    if (coin) setTargetCoinInner(coin);
+    if (!coin) return;
+    setTargetCoinInner(coin);
+    setQuoteQuery({
+      ...quoteQuery,
+      targetCoin: coin.coinType,
+    });
   };
 
   const switchCoin = () => {
     const tmp = sourceCoin;
-    setSourceCoinInner(targetCoin);
-    setTargetCoinInner(tmp);
+    setSourceCoin(targetCoin.coinType);
+    setTargetCoin(tmp.coinType);
   };
 
-  const [val, setVal] = useState(0);
+  const setSourceVolume = (volume: number) => {
+    setQuoteQuery({
+      ...quoteQuery,
+      sourceAmount: new Decimal(volume).mul(10 ** sourceCoin.decimals).toNumber(),
+    });
+  };
+
+  const targetVolume = () => new Decimal(quote.data?.target_amount || 0)
+    .div(10 ** targetCoin.decimals)
+    .toNumber();
+
+  const { quoteQuery, setQuoteQuery } = useQuoteQuery({
+    sourceAmount: 0,
+    sourceCoin: sourceCoin.coinType,
+    targetCoin: targetCoin.coinType,
+  });
+
+  const quote = useQuoteApi({
+    chain,
+    quoteQuery,
+  });
+
+  const routeDigest = () => {
+    if (!quote.data) return;
+
+    const venues = [...new Set(quote.data.paths
+      .flatMap(p => p.path.steps
+        .flatMap(s => s.venues
+          .flatMap(v => v.venue.name)))
+    )];
+    const venuesCount = venues.length;
+    const venueNames = venues.join(', ');
+
+    return `Swap via ${venuesCount} venue${venuesCount > 1 ? 's' : ''}: ${venueNames}`;
+  };
+
+  // TODO: Add support for Aptos
+  const swap = async () => {
+    if (!props.wallet) return;
+    if (!props.provider) return;
+    if (!props.accountAddress) return;
+    if (!quote.data) return;
+
+    const txb = await buildTransactionBlockForUmiAgSwap({
+      provider: props.provider,
+      accountAddress: props.accountAddress,
+      quote: quote.data,
+      slippageTolerance: 1,
+    });
+    const { digest } = await props.wallet.signAndExecuteTransactionBlock({ transactionBlock: txb });
+    console.log(digest);
+  };
 
   return (
     <div className="p-4 text-black bg-white swap-form w-[600px] rounded-2xl">
@@ -80,7 +146,9 @@ export const UmiSwapWidgetContent: React.FC<SwapWidgetProps> = (props) => {
         <div className="flex items-center justify-between mb-2">
           <span className="text-left text-gray-500">From</span>
           {
-            balances.data && <button className="px-2 py-1 text-sm text-gray-100 bg-blue-400 rounded-md">Max: 123</button>
+            balances.data && <button className="px-2 py-1 text-sm text-gray-100 bg-blue-400 rounded-md">
+              Max: {balances.data.find(b => b.coinType === sourceCoin.coinType)?.totalBalance.toFixed(4) ?? 0}
+            </button>
           }
         </div>
         <div className="flex items-center justify-between mb-2">
@@ -94,8 +162,8 @@ export const UmiSwapWidgetContent: React.FC<SwapWidgetProps> = (props) => {
             ))}
           </select>
           <NumericFormat
-            value={val}
-            onValueChange={val => setVal(val.floatValue ?? 0)}
+            value={0}
+            onValueChange={val => setSourceVolume(val.floatValue ?? 0)}
             customInput={InputBase}
           />
         </div>
@@ -123,14 +191,21 @@ export const UmiSwapWidgetContent: React.FC<SwapWidgetProps> = (props) => {
           </select>
           <NumericFormat
             customInput={InputBase}
-            value={123}
+            value={targetVolume()}
             disabled
           />
         </div>
         <p className="text-left text-gray-500">USD Coin</p>
       </div>
 
-      <button className="w-full p-4 text-2xl rounded-full bg-emerald-300 hover:bg-emerald-400">Swap</button>
+      <p className="h-4 px-2 mb-4 text-gray-500">{routeDigest()}</p>
+
+      <button
+        className="w-full p-4 text-2xl rounded-full bg-emerald-300 hover:bg-emerald-400"
+        onClick={swap}
+      >
+        Swap
+      </button>
     </div>
   );
 };
