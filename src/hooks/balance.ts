@@ -25,8 +25,6 @@ export const useSuiBalance = ({
         owner: accountAddress,
       });
 
-      console.log({ balanceList });
-
       return balanceList.map(b => ({
         coinType: b.coinType,
         totalBalance: new Decimal(b.totalBalance),

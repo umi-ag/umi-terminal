@@ -34,6 +34,7 @@ const UmiSwapWidgetContent: React.FC<SwapWidgetProps> = (props) => {
     provider: props.provider,
     accountAddress: props.accountAddress,
   });
+
   const coinList = useCoinList({
     chain,
   });
@@ -72,11 +73,19 @@ const UmiSwapWidgetContent: React.FC<SwapWidgetProps> = (props) => {
     setTargetCoin(tmp.coinType);
   };
 
+  const [sourceVolume, setSourceVolumeInner] = useState<number>(0);
+
   const setSourceVolume = (volume: number) => {
     setQuoteQuery({
       ...quoteQuery,
       sourceAmount: new Decimal(volume).mul(10 ** sourceCoin.decimals).toNumber(),
     });
+    setSourceVolumeInner(volume);
+  };
+
+  const maxSourceVolume = () => {
+    const balance = currentBalance();
+    setSourceVolume(balance);
   };
 
   const targetVolume = () => new Decimal(quote.data?.target_amount || 0)
@@ -149,7 +158,7 @@ const UmiSwapWidgetContent: React.FC<SwapWidgetProps> = (props) => {
         <div className="flex items-center justify-between mb-2">
           <span className="text-left text-gray-500">From</span>
           {
-            balances.data && <button className="px-2 py-1 text-sm text-gray-100 bg-blue-400 rounded-md">
+            balances.data && <button className="px-2 py-1 text-sm text-gray-100 bg-blue-400 rounded-md" onClick={maxSourceVolume}>
               Max: {currentBalance()}
             </button>
           }
@@ -165,7 +174,7 @@ const UmiSwapWidgetContent: React.FC<SwapWidgetProps> = (props) => {
             ))}
           </select>
           <NumericFormat
-            value={0}
+            value={sourceVolume}
             onValueChange={val => setSourceVolume(val.floatValue ?? 0)}
             customInput={InputBase}
           />
