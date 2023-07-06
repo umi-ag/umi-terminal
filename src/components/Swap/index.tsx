@@ -123,7 +123,6 @@ export const UmiSwapWidgetContent: React.FC<SwapWidgetProps> = (props) => {
 
   return (
     <div className="p-4 text-black bg-white swap-form w-[600px] rounded-2xl">
-      <p>{chain}</p>
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center justify-between gap-4"><img src={umiLogo} alt="umi logo" className="w-8 h-8 rounded-full" /> Umi.ag</div>
         <div className="flex justify-between gap-4">
