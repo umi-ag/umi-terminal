@@ -12,6 +12,7 @@ import { initialCoinSelection, useCoinList } from '../../hooks/coinList';
 import { useQuoteApi, useQuoteQuery } from '../../hooks/quoteApi';
 import { buildTransactionBlockForUmiAgSwap } from '@umi-ag/sui-sdk';
 import Decimal from 'decimal.js';
+import debounce from 'just-debounce';
 
 export const InputBase: React.FC = (props) => {
   return (
@@ -132,7 +133,17 @@ const UmiSwapWidgetContent: React.FC<SwapWidgetProps> = (props) => {
     });
     const { digest } = await props.wallet.signAndExecuteTransactionBlock({ transactionBlock: txb });
     console.log(digest);
+
+    await balances.refetch();
   };
+
+  const refresh = debounce(
+    async () => {
+      await balances.refetch();
+      await quote.refetch();
+    },
+    1000,
+  );
 
   return (
     <div className="p-4 text-black bg-white swap-form w-[600px] rounded-2xl">
@@ -147,7 +158,7 @@ const UmiSwapWidgetContent: React.FC<SwapWidgetProps> = (props) => {
             <option value="sui">Sui</option>
             <option value="aptos" disabled>Aptos</option>
           </select>
-          <button className="w-8 h-8 rounded-full outline-none grid place-items-center border-[1px] bg-slate-50">
+          <button className="w-8 h-8 rounded-full outline-none grid place-items-center border-[1px] bg-slate-50" onClick={refresh}>
             <img src={refreshIcon} alt="🔃" className="w-6 h-6" />
           </button>
           <button className="h-8 px-2 rounded-full outline-none border-[1px] bg-slate-50">0.5%</button>
