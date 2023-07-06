@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { NumericFormat } from 'react-number-format';
 import umiLogo from '../../assets/umi.jpeg';
 import refreshIcon from '../../assets/refresh.svg';
 import './style.scss';
 import type { JsonRpcProvider } from '@mysten/sui.js';
 import { useBalance } from '../../hooks/balance';
-import type { Chain } from '../../type';
+import type { Chain, CoinProfile } from '../../type';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
-import { useCoinList } from '../../hooks/coinList';
+import { initialCoinSelection, useCoinList } from '../../hooks/coinList';
 
 export const InputBase: React.FC = (props) => {
   return (
@@ -33,6 +33,25 @@ export const UmiSwapWidgetContent: React.FC<SwapWidgetProps> = (props) => {
   const coinList = useCoinList({
     chain,
   });
+
+  const initialCoin = useMemo(() => initialCoinSelection[chain], [chain]);
+  const [sourceCoin, setSourceCoinInner] = useState<CoinProfile>(initialCoin.source);
+  const [targetCoin, setTargetCoinInner] = useState<CoinProfile>(initialCoin.target);
+
+  const setSourceCoin = (coinType: string) => {
+    const coin = coinList.data?.find(coin => coin.coinType === coinType);
+    if (coin) setSourceCoinInner(coin);
+  };
+  const setTargetCoin = (coinType: string) => {
+    const coin = coinList.data?.find(coin => coin.coinType === coinType);
+    if (coin) setTargetCoinInner(coin);
+  };
+
+  const switchCoin = () => {
+    const tmp = sourceCoin;
+    setSourceCoinInner(targetCoin);
+    setTargetCoinInner(tmp);
+  };
 
   const [val, setVal] = useState(0);
 
@@ -65,9 +84,13 @@ export const UmiSwapWidgetContent: React.FC<SwapWidgetProps> = (props) => {
           }
         </div>
         <div className="flex items-center justify-between mb-2">
-          <select className="text-2xl bg-transparent outline-none cursor-pointer min-w-[4em]">
+          <select
+            className="text-2xl bg-transparent outline-none cursor-pointer min-w-[4em]"
+            value={sourceCoin?.coinType}
+            onChange={e => setSourceCoin(e.currentTarget.value)}
+          >
             {coinList.data?.map((coin) => (
-              <option key={coin.id} value={coin.symbol}>{coin.symbol}</option>
+              <option key={coin.id} value={coin.coinType}>{coin.symbol}</option>
             ))}
           </select>
           <NumericFormat
@@ -80,15 +103,22 @@ export const UmiSwapWidgetContent: React.FC<SwapWidgetProps> = (props) => {
       </div>
 
       <div className="flex items-center justify-center p-2">
-        <button className="w-10 h-10 border-gray-400 rounded-full grid place-items-center border-[1px] hover:bg-slate-100">↑↓</button>
+        <button
+          className="w-10 h-10 border-gray-400 rounded-full grid place-items-center border-[1px] hover:bg-slate-100"
+          onClick={switchCoin}
+        >↑↓</button>
       </div>
 
       <div className="px-4 py-2 mb-4 bg-white border-slate-200 border-[1px] rounded-xl">
         <p className="mb-2 text-left text-gray-500">To</p>
         <div className="flex items-center justify-between mb-2">
-          <select className="text-2xl bg-transparent outline-none cursor-pointer min-w-[4em]">
+          <select
+            className="text-2xl bg-transparent outline-none cursor-pointer min-w-[4em]"
+            value={targetCoin?.coinType}
+            onChange={e => setTargetCoin(e.currentTarget.value)}
+          >
             {coinList.data?.map((coin) => (
-              <option key={coin.id} value={coin.symbol}>{coin.symbol}</option>
+              <option key={coin.id} value={coin.coinType}>{coin.symbol}</option>
             ))}
           </select>
           <NumericFormat
