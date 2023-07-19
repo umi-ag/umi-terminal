@@ -13,6 +13,7 @@ import { useQuoteApi, useQuoteQuery } from '../../hooks/quoteApi';
 import { buildTransactionBlockForUmiAgSwap } from '@umi-ag/sui-sdk';
 import Decimal from 'decimal.js';
 import debounce from 'just-debounce';
+import { CoinIcon } from './CoinIcon';
 
 export const InputBase: React.FC = (props) => {
   return (
@@ -28,6 +29,7 @@ export type SwapWidgetProps = {
   provider?: JsonRpcProvider;
 };
 
+// TODO: Refactor
 const UmiSwapWidgetContent: React.FC<SwapWidgetProps> = (props) => {
   const [chain, setChain] = useState<Chain>('sui');
   const balances = useBalance({
@@ -181,6 +183,10 @@ const UmiSwapWidgetContent: React.FC<SwapWidgetProps> = (props) => {
           }
         </div>
         <div className="flex items-center justify-between mb-2">
+          <div className="w-8 h-8 mr-2">
+            <CoinIcon iconUrl={sourceCoin.iconUrl} />
+          </div>
+
           <select
             className="text-2xl bg-transparent outline-none cursor-pointer min-w-[4em]"
             value={sourceCoin?.coinType}
@@ -209,6 +215,10 @@ const UmiSwapWidgetContent: React.FC<SwapWidgetProps> = (props) => {
       <div className="px-4 py-2 mb-4 bg-white border-slate-200 border-[1px] rounded-xl">
         <p className="mb-2 text-left text-gray-500">To</p>
         <div className="flex items-center justify-between mb-2">
+          <div className="w-8 h-8 mr-2">
+            <CoinIcon iconUrl={targetCoin.iconUrl} />
+          </div>
+
           <select
             className="text-2xl bg-transparent outline-none cursor-pointer min-w-[4em]"
             value={targetCoin?.coinType}
