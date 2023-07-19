@@ -8,7 +8,7 @@ const SUI = {
   'name': 'Sui',
   'symbol': 'SUI',
   'description': '',
-  'iconUrl': null,
+  'iconUrl': 'https://strapi.scand.app/uploads/644b3314022eae0001db3110_coin_logo_bb22eaf116.png',
   'id': '0x9258181f5ceac8dbffb7030890243caed69a9599d2886d957a9cb7656af3bdb3'
 };
 
@@ -18,7 +18,7 @@ const USDC_SUI = {
   'name': 'USD Coin',
   'symbol': 'USDC',
   'description': '',
-  'iconUrl': null,
+  'iconUrl': 'https://strapi.scand.app/uploads/usdc_019d7ef24b.png',
   'id': '0x4fbf84f3029bd0c0b77164b587963be957f853eccf834a67bb9ecba6ec80f189'
 };
 
