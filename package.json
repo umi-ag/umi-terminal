@@ -1,7 +1,6 @@
 {
   "name": "@umi-ag/swap-widget",
-  "private": true,
-  "version": "0.0.0",
+  "version": "0.202307.1",
   "type": "module",
   "files": [
     "dist"
@@ -20,9 +19,11 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
+    "build:ui": "MODE=ui vite build",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "analyze": "vite-bundle-visualizer"
+    "analyze": "vite-bundle-visualizer",
+    "pub": "pnpm build && npm publish --access public"
   },
   "dependencies": {
     "@mysten/sui.js": "^0.34.1",
