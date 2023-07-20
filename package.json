@@ -21,7 +21,8 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "analyze": "vite-bundle-visualizer"
   },
   "dependencies": {
     "@mysten/sui.js": "^0.34.1",
@@ -56,6 +57,7 @@
     "tailwindcss": "^3.3.2",
     "typescript": "^5.0.2",
     "vite": "^4.3.9",
+    "vite-bundle-visualizer": "^0.8.0",
     "vite-plugin-dts": "^3.0.3"
   }
 }

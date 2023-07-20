@@ -3,7 +3,9 @@ import path from 'node:path';
 import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
 
-export default defineConfig({
+const MODE = process.env.MODE ?? 'lib';
+
+const libConfig = defineConfig({
   plugins: [
     react(),
     dts({
@@ -11,7 +13,7 @@ export default defineConfig({
     }),
   ],
   build: {
-    lib: {
+    lib: MODE === 'lib' && {
       entry: path.resolve(__dirname, 'src/lib.ts'),
       name: 'MyLib',
       formats: ['es', 'umd'],
@@ -29,3 +31,13 @@ export default defineConfig({
     },
   },
 });
+
+const uiConfig = defineConfig({
+  plugins: [react()],
+  build: {
+    outDir: 'dist',
+    emptyOutDir: true,
+  }
+});
+
+export default MODE === 'lib' ? libConfig : uiConfig;
