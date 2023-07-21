@@ -1,7 +1,7 @@
 import type { JsonRpcProvider } from '@mysten/sui.js';
 import type { Chain } from '../type';
-import { useQuery } from '@tanstack/react-query';
 import { Decimal } from 'decimal.js';
+import useSWR from 'swr';
 
 export const useSuiBalance = ({
   provider,
@@ -10,9 +10,9 @@ export const useSuiBalance = ({
   provider?: JsonRpcProvider;
   accountAddress?: string;
 }) => {
-  const query = useQuery({
-    queryKey: ['sui', 'balances', accountAddress],
-    queryFn: async () => {
+  const query = useSWR(
+    ['sui', 'balances', accountAddress],
+    async () => {
       if (!provider) {
         throw new Error('Provider is not set');
       }
@@ -30,10 +30,12 @@ export const useSuiBalance = ({
         totalBalance: new Decimal(b.totalBalance),
       }));
     },
-    enabled: !!accountAddress && !!provider,
-    refetchInterval: 60_000, // 1 min
-    refetchOnWindowFocus: false,
-  });
+    {
+      refreshInterval: 60_000, // 1 min
+      revalidateOnFocus: false,
+      revalidateIfStale: !!accountAddress && !!provider,
+    }
+  );
 
   return query;
 };
