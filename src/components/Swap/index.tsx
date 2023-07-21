@@ -22,11 +22,24 @@ export const InputBase: React.FC = (props) => {
 };
 
 export type SwapWidgetProps = {
+  /**
+   * The address of the account to use for the swap.
+   */
   accountAddress?: string;
+  /**
+   * The wallet to use for the swap.
+   */
   wallet?: {
     signAndExecuteTransactionBlock: (p: any) => Promise<any>;
   } | null;
+  /**
+   * Sui JsonRpcProvider
+   */
   provider?: JsonRpcProvider;
+  /**
+   * Partner policy object id for Sui
+   */
+  partnerPolicyObjectId?: string;
 };
 
 // TODO: Refactor
