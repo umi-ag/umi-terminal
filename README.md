@@ -1,5 +1,13 @@
 # @umi-ag/swap-widget
 
+<p align="center">
+  <img src="./images/swap-interface.png" width="500" />
+</p>
+
+<p align="center" style="font-size: 150%">
+   <a href="https://swap-widget.umi.ag">DEMO</a>
+</p>
+
 ## Overview
 
 @umi-ag/swap-widget is a powerful library designed for React projects. It
@@ -29,12 +37,9 @@ project's root directory:
 
 ```bash
 npm install @umi-ag/swap-widget
-```
-
-Or with yarn/pnpm:
-
-```bash
+# or yarn
 yarn add @umi-ag/swap-widget
+# or pnpm
 pnpm add @umi-ag/swap-widget
 ```
 
@@ -52,10 +57,14 @@ function App() {
 
   /**
    * You need to pass these props to the UmiSwapWidget component:
-   * 1. accountAddress: string
-   * 2. wallet: Wallet
-   *    (which must have a method called "signAndExecuteTransactionBlock(")
-   * 3. provider: JsonRpcProvider
+   *
+   * type SwapWidgetProps = {
+   *    accountAddress?: string;
+   *    wallet?: {
+   *       signAndExecuteTransactionBlock: (p: any) => Promise<any>;
+   *    } | null;
+   *    provider?: JsonRpcProvider;
+   * };
    */
 
   return (
@@ -76,36 +85,37 @@ export default App;
 
 Or you can use the hooks directly:
 
+```ts
+import { useBalance, useCoinList, useQuoteApi } from "@umi-ag/swap-widget";
+
+const balances = useBalance({
+  chain, // default to Sui
+  provider: props.provider, // JsonRpcProvider
+  accountAddress: props.accountAddress, // string
+});
+
+const coinList = useCoinList({
+  chain,
+});
+
+const quote = useQuoteApi({
+  chain,
+  quoteQuery,
+});
+```
+
+These hooks use swr internally, so you can access the data and error like this:
+
 ```tsx
-import { useCoinListAPI, useQuoteAPI } from "@umi-ag/swap-widget";
+const { data: balances, error: balanceError } = useBalance({
+  chain,
+  provider: props.provider,
+  accountAddress: props.accountAddress,
+});
 ```
 
-To incorporate the @umi-ag/swap-widget in your project, follow these simple
-steps:
-
-1. Import the library into your React project.
-
-```javascript
-import {
-  SwapComponent,
-  useQuoteAPI,
-  useSuiCoinListAPI,
-} from "@umi-ag/swap-widget";
-```
-
-2. Use the SwapComponent to provide swapping functionality in your application.
-
-```javascript
-<SwapComponent />;
-```
-
-3. Leverage the `useQuoteAPI()` and `useSuiCoinListAPI()` hooks to interact with
-   the respective APIs.
-
-```javascript
-const { data: quoteData, error: quoteError } = useQuoteAPI();
-const { data: coinListData, error: coinListError } = useSuiCoinListAPI();
-```
+For the detail of QuoteQuery, please refer to
+[Umi SDK](https://github.com/umi-ag/umi-sdk/blob/alpha/typescript/sui-sdk/src/types/index.ts#L67)
 
 These hooks will handle fetching data from the quote and sui-coin-list APIs,
 respectively, and will return the data and any error that occurs during the
@@ -113,12 +123,6 @@ fetch.
 
 Please refer to our comprehensive documentation for a more in-depth guide on how
 to use the @umi-ag/swap-widget library.
-
-## Live Demo
-
-For a practical understanding of how @umi-ag/swap-widget can enhance your
-project, please visit our live demo at
-[https://swap-widget.umi.ag](https://swap-widget.umi.ag).
 
 ## Contributing
 
