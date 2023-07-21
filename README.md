@@ -64,6 +64,7 @@ function App() {
    *       signAndExecuteTransactionBlock: (p: any) => Promise<any>;
    *    } | null;
    *    provider?: JsonRpcProvider;
+   *    partnerPolicyObjectId?: string;
    * };
    */
 
@@ -73,6 +74,7 @@ function App() {
         accountAddress={currentAccount?.address}
         wallet={currentWallet}
         provider={provider}
+        partnerPolicyObjectId="0x1234....abcde"
       />
     </>
   );
