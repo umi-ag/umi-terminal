@@ -21,8 +21,6 @@ websites. A live demonstration of the Swap widget can be viewed at
    to what's offered by 1inch.
 3. Sui-coin-list API Hooks: Includes hooks to interact with the sui-coin-list
    API, simplifying the process of fetching coin data from Sui.
-4. Seamless Integration: Designed with React in mind, it seamlessly integrates
-   with your existing React projects, ensuring an effortless setup process.
 
 ## Installation
 
@@ -41,6 +39,46 @@ pnpm add @umi-ag/swap-widget
 ```
 
 ## Usage
+
+### Swap Interface
+
+```tsx
+import { UmiSwapWidget } from "./components/Swap";
+import { JsonRpcProvider, mainnetConnection } from "@mysten/sui.js";
+
+function App() {
+  const { currentAccount, currentWallet } = useWalletKit();
+  const provider = new JsonRpcProvider(mainnetConnection);
+
+  /**
+   * You need to pass these props to the UmiSwapWidget component:
+   * 1. accountAddress: string
+   * 2. wallet: Wallet
+   *    (which must have a method called "signAndExecuteTransactionBlock(")
+   * 3. provider: JsonRpcProvider
+   */
+
+  return (
+    <>
+      <UmiSwapWidget
+        accountAddress={currentAccount?.address}
+        wallet={currentWallet}
+        provider={provider}
+      />
+    </>
+  );
+}
+
+export default App;
+```
+
+### Hooks
+
+Or you can use the hooks directly:
+
+```tsx
+import { useCoinListAPI, useQuoteAPI } from "@umi-ag/swap-widget";
+```
 
 To incorporate the @umi-ag/swap-widget in your project, follow these simple
 steps:
