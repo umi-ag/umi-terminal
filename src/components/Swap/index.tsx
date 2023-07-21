@@ -7,13 +7,13 @@ import './style.scss';
 import type { JsonRpcProvider } from '@mysten/sui.js';
 import { useBalance } from '../../hooks/balance';
 import type { Chain, CoinProfile } from '../../type';
-import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import { initialCoinSelection, useCoinList } from '../../hooks/coinList';
 import { useQuoteApi, useQuoteQuery } from '../../hooks/quoteApi';
 import { buildTransactionBlockForUmiAgSwap } from '@umi-ag/sui-sdk';
 import Decimal from 'decimal.js';
 import debounce from 'just-debounce';
 import { CoinIcon } from './CoinIcon';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 export const InputBase: React.FC = (props) => {
   return (
@@ -142,13 +142,13 @@ const UmiSwapWidgetContent: React.FC<SwapWidgetProps> = (props) => {
     const { digest } = await props.wallet.signAndExecuteTransactionBlock({ transactionBlock: txb });
     console.log(digest);
 
-    await balances.refetch();
+    await balances.mutate();
   };
 
   const refresh = debounce(
     async () => {
-      await balances.refetch();
-      await quote.refetch();
+      await balances.mutate();
+      await quote.mutate();
     },
     1000,
   );

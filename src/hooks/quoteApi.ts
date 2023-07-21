@@ -1,9 +1,9 @@
-import { useQuery } from '@tanstack/react-query';
 import type { Chain } from '../type';
 import type { QuoteQuery } from '@umi-ag/sui-sdk';
 import { fetchQuoteFromUmi } from '@umi-ag/sui-sdk';
 import { useDebounce } from '@react-hook/debounce';
 import Decimal from 'decimal.js';
+import useSWR from 'swr';
 
 export const useQuoteQuery = (init: QuoteQuery) => {
   const [quoteQuery, setQuoteQuery] = useDebounce(init, 1000);
@@ -15,17 +15,18 @@ export const useQuoteQuery = (init: QuoteQuery) => {
 };
 
 export const useSuiQuoteApi = (quoteQuery: QuoteQuery) => {
-  const query = useQuery({
-    queryKey: ['sui', 'quoteApi', quoteQuery],
-    queryFn: async () => {
+  const query = useSWR(
+    ['sui', 'quoteApi', quoteQuery],
+    async () => {
       const [quote] = await fetchQuoteFromUmi(quoteQuery);
       return quote;
     },
-    enabled: new Decimal(quoteQuery.sourceAmount).gt(0),
-    refetchOnMount: false,
-    refetchInterval: false,
-    refetchOnWindowFocus: false,
-  });
+    {
+      revalidateOnMount: false,
+      revalidateOnFocus: false,
+      revalidateIfStale: new Decimal(quoteQuery.sourceAmount).gt(0),
+    }
+  );
 
   return query;
 };

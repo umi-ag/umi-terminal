@@ -1,6 +1,6 @@
-import { useQuery } from '@tanstack/react-query';
 import type { Chain, CoinProfile } from '../type';
 import { fetchCoinList } from '@umi-ag/sui-coin-list';
+import useSWR from 'swr';
 
 const SUI = {
   'coinType': '0x2::sui::SUI',
@@ -23,14 +23,16 @@ const USDC_SUI = {
 };
 
 export const useSuiCoinList = () => {
-  const query = useQuery({
-    queryKey: ['sui', 'coinList'],
-    // TODO: Implement this
-    queryFn: async () => fetchCoinList(),
-    initialData: [SUI, USDC_SUI],
-    refetchInterval: 60_000, // 1 min
-    refetchOnWindowFocus: false,
-  });
+  const query = useSWR(
+    ['sui', 'coinList'],
+    async () => {
+      return fetchCoinList();
+    },
+    {
+      refreshInterval: 60_000, // 1 min
+      revalidateOnFocus: false,
+    }
+  );
 
   return query;
 };
