@@ -9,12 +9,14 @@ function App() {
 
   return (
     <>
-      <div className="p-16 grid place-items-center w-100vw h-100vh">
-        <UmiSwapWidget
-          accountAddress={currentAccount?.address}
-          wallet={currentWallet}
-          provider={provider}
-        />
+      <div className="p-16 w-100vw h-100vh">
+        <div className="mx-auto my-0 w-[600px]">
+          <UmiSwapWidget
+            accountAddress={currentAccount?.address}
+            wallet={currentWallet}
+            provider={provider}
+          />
+        </div>
       </div>
 
       <div className="grid place-items-center">
