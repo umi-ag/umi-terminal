@@ -14,6 +14,8 @@ import Decimal from 'decimal.js';
 import debounce from 'just-debounce';
 import { CoinIcon } from './CoinIcon';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import type { ModalProps } from '../ModalBase';
+import { Modal } from '../ModalBase';
 
 export const InputBase: React.FC = (props) => {
   return (
@@ -269,5 +271,15 @@ export const UmiSwapWidget: React.FC<SwapWidgetProps> = (props) => {
     <QueryClientProvider client={queryClient}>
       <UmiSwapWidgetContent {...props} />
     </QueryClientProvider>
+  );
+};
+
+export const UmiSwapModal: React.FC<ModalProps & SwapWidgetProps> = (props) => {
+  return (
+    <Modal {...props}>
+      <div className="w-[600px]">
+        <UmiSwapWidget {...props} />
+      </div>
+    </Modal>
   );
 };

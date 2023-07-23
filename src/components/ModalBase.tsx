@@ -37,6 +37,8 @@ const style: ReactModal.Props['style'] = {
   },
 };
 
+export type ModalProps = ReactModal.Props;
+
 export const Modal: React.FC<ReactModal.Props> = (props) => {
   return (
     <ReactModal style={style} {...props}>

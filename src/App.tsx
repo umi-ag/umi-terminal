@@ -1,8 +1,7 @@
 import './App.scss';
-import { UmiSwapWidget } from './components/Swap';
+import { UmiSwapModal, UmiSwapWidget } from './components/Swap';
 import { ConnectButton, useWalletKit } from '@mysten/wallet-kit';
 import { JsonRpcProvider, mainnetConnection } from '@mysten/sui.js';
-import { Modal } from './components/ModalBase';
 
 function App() {
   const { currentAccount, currentWallet } = useWalletKit();
@@ -10,7 +9,7 @@ function App() {
 
   return (
     <>
-      {/* <div className="p-16 w-100vw h-100vh">
+      <div className="p-16 w-100vw h-100vh">
         <div className="mx-auto my-0 w-[600px]">
           <UmiSwapWidget
             accountAddress={currentAccount?.address}
@@ -18,17 +17,9 @@ function App() {
             provider={provider}
           />
         </div>
-      </div> */}
+      </div>
 
-      <Modal>
-        <div className="w-[600px]">
-          <UmiSwapWidget
-            accountAddress={currentAccount?.address}
-            wallet={currentWallet}
-            provider={provider}
-          />
-        </div>
-      </Modal>
+      <UmiSwapModal isOpen={false} />
 
       <div className="grid place-items-center">
         <ConnectButton />
