@@ -14,6 +14,8 @@ import Decimal from 'decimal.js';
 import debounce from 'just-debounce';
 import { CoinIcon } from './CoinIcon';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import type { ModalProps } from '../ModalBase';
+import { Modal } from '../ModalBase';
 
 export const InputBase: React.FC = (props) => {
   return (
@@ -167,7 +169,7 @@ const UmiSwapWidgetContent: React.FC<SwapWidgetProps> = (props) => {
   );
 
   return (
-    <div className="p-4 text-black bg-white swap-form w-[600px] rounded-2xl">
+    <div className="w-full p-4 text-black bg-white swap-form rounded-2xl">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center justify-between gap-4"><img src={umiLogo} alt="umi logo" className="w-8 h-8 rounded-full" /> Umi.ag</div>
         <div className="flex justify-between gap-4">
@@ -269,5 +271,37 @@ export const UmiSwapWidget: React.FC<SwapWidgetProps> = (props) => {
     <QueryClientProvider client={queryClient}>
       <UmiSwapWidgetContent {...props} />
     </QueryClientProvider>
+  );
+};
+
+export type UmiSwapModalProps = SwapWidgetProps & ModalProps & {
+  hideButton?: boolean;
+};
+
+export const UmiSwapModal: React.FC<UmiSwapModalProps> = (props) => {
+  const [isOpen, setIsOpen] = useState<boolean>(props.isOpen ?? false);
+
+  const defaultButton = (
+    <button
+      className="fixed w-16 h-16 overflow-hidden border-4 border-gray-100 rounded-full shadow-lg cursor-pointer bottom-4 right-4"
+      onClick={() => setIsOpen(true)}
+    >
+      <img src={umiLogo} alt="umi logo" className="rounded-full"/>
+    </button>
+  );
+
+  return (
+    <>
+      {!props.hideButton && defaultButton}
+
+      <Modal {...props} isOpen={isOpen} onRequestClose={() => setIsOpen(false)}>
+        <div className="w-[600px]">
+          <UmiSwapWidget {...props} />
+          <div className="grid place-items-center">
+            <button className="w-8 h-8 mt-4 bg-gray-100 rounded-full" onClick={() => setIsOpen(false)}>✗</button>
+          </div>
+        </div>
+      </Modal>
+    </>
   );
 };
