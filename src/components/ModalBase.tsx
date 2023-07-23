@@ -12,22 +12,19 @@ ReactModal.setAppElement(document.body);
 
 const style: ReactModal.Props['style'] = {
   overlay: {
+    display: 'grid',
+    placeItems: 'center',
     position: 'fixed',
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
     zIndex: 9999,
   },
   content: {
-    display: 'grid',
-    placeItems: 'center',
     position: 'relative',
     top: 'auto',
     left: 'auto',
     right: 'auto',
     bottom: 'auto',
-    margin: 'auto',
     padding: '0',
-    width: '100%',
-    height: '100%',
     border: 'none',
     borderRadius: '0',
     backgroundColor: 'transparent',

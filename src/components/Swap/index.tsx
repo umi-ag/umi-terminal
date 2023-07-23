@@ -275,11 +275,21 @@ export const UmiSwapWidget: React.FC<SwapWidgetProps> = (props) => {
 };
 
 export const UmiSwapModal: React.FC<ModalProps & SwapWidgetProps> = (props) => {
+  const [isOpen, setIsOpen] = useState<boolean>(props.isOpen ?? false);
+
   return (
-    <Modal {...props}>
-      <div className="w-[600px]">
-        <UmiSwapWidget {...props} />
-      </div>
-    </Modal>
+    <>
+      <button
+        className="w-16 h-16 overflow-hidden border-4 border-gray-100 rounded-full shadow-lg cursor-pointer"
+        onClick={() => setIsOpen(true)}
+      >
+        <img src={umiLogo} alt="umi logo" className="rounded-full"/>
+      </button>
+      <Modal {...props} isOpen={isOpen} onRequestClose={() => setIsOpen(false)}>
+        <div className="w-[600px]">
+          <UmiSwapWidget {...props} />
+        </div>
+      </Modal>
+    </>
   );
 };
