@@ -274,20 +274,32 @@ export const UmiSwapWidget: React.FC<SwapWidgetProps> = (props) => {
   );
 };
 
-export const UmiSwapModal: React.FC<ModalProps & SwapWidgetProps> = (props) => {
+export type UmiSwapModalProps = SwapWidgetProps & ModalProps & {
+  hideButton?: boolean;
+};
+
+export const UmiSwapModal: React.FC<UmiSwapModalProps> = (props) => {
   const [isOpen, setIsOpen] = useState<boolean>(props.isOpen ?? false);
+
+  const defaultButton = (
+    <button
+      className="fixed w-16 h-16 overflow-hidden border-4 border-gray-100 rounded-full shadow-lg cursor-pointer bottom-4 right-4"
+      onClick={() => setIsOpen(true)}
+    >
+      <img src={umiLogo} alt="umi logo" className="rounded-full"/>
+    </button>
+  );
 
   return (
     <>
-      <button
-        className="w-16 h-16 overflow-hidden border-4 border-gray-100 rounded-full shadow-lg cursor-pointer"
-        onClick={() => setIsOpen(true)}
-      >
-        <img src={umiLogo} alt="umi logo" className="rounded-full"/>
-      </button>
+      {!props.hideButton && defaultButton}
+
       <Modal {...props} isOpen={isOpen} onRequestClose={() => setIsOpen(false)}>
         <div className="w-[600px]">
           <UmiSwapWidget {...props} />
+          <div className="grid place-items-center">
+            <button className="w-8 h-8 mt-4 bg-gray-100 rounded-full" onClick={() => setIsOpen(false)}>✗</button>
+          </div>
         </div>
       </Modal>
     </>
