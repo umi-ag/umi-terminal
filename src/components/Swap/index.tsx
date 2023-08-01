@@ -153,6 +153,7 @@ const UmiSwapWidgetContent: React.FC<SwapWidgetProps> = (props) => {
       accountAddress: props.accountAddress,
       quote: quote.data,
       slippageTolerance: 1,
+      partnerPolicyObjectId: props.partnerPolicyObjectId,
     });
     const { digest } = await props.wallet.signAndExecuteTransactionBlock({ transactionBlock: txb });
     console.log(digest);
