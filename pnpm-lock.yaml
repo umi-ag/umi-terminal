@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   '@mysten/sui.js':
-    specifier: ^0.37.1
-    version: 0.37.1
+    specifier: ^0.39.0
+    version: 0.39.0
   '@mysten/wallet-kit':
     specifier: ^0.4.12
     version: 0.4.12(react-dom@18.2.0)(react@18.2.0)
@@ -24,8 +24,8 @@ dependencies:
     specifier: ^0.202307.3
     version: 0.202307.3
   '@umi-ag/sui-sdk':
-    specifier: ^0.202307.2
-    version: 0.202307.2
+    specifier: ^0.202308.1
+    version: 0.202308.1
   decimal.js:
     specifier: ^10.4.3
     version: 10.4.3
@@ -729,6 +729,26 @@ packages:
       - utf-8-validate
     dev: false
 
+  /@mysten/sui.js@0.39.0:
+    resolution: {integrity: sha512-fJu6k7+Qb1z2h9i5Jai0sTWmaGP1UT6d/JIXhEwMZ6cz+13GT/8zRp8kUhP7Oq9Z2hxmwfy1ROptbsrv/x9V8A==}
+    engines: {node: '>=16'}
+    dependencies:
+      '@mysten/bcs': 0.7.3
+      '@noble/curves': 1.1.0
+      '@noble/hashes': 1.3.1
+      '@open-rpc/client-js': 1.8.1
+      '@scure/bip32': 1.3.1
+      '@scure/bip39': 1.2.1
+      '@suchipi/femver': 1.0.0
+      events: 3.3.0
+      superstruct: 1.0.3
+      tweetnacl: 1.0.3
+    transitivePeerDependencies:
+      - bufferutil
+      - encoding
+      - utf-8-validate
+    dev: false
+
   /@mysten/wallet-adapter-base@0.7.12:
     resolution: {integrity: sha512-5xDLaZ11+Sw65I9VSzmsHlue8jV0Kq/HiBJYmQes5TU2clwV0ClNBlw7CCipkMPi6IfhBSaaLXWZ9ftX0KG1TQ==}
     dependencies:
@@ -1181,10 +1201,10 @@ packages:
     resolution: {integrity: sha512-wMOGnpdtMX/OXNjSybnjjPwWF0IcV95Rks5G6Ln56myWU43Xhgy4+9ec7O3pn5kJuLWDOzIqVegb0tDCjZZJ4A==}
     dev: false
 
-  /@umi-ag/sui-sdk@0.202307.2:
-    resolution: {integrity: sha512-uZHdUSi+jzvPFemcr+7zL5Ih+TTWlHLTqvcZhXteGBhhJK7yXagSKHpfZJz0XBmTWfbPDNRfpNwghSLuJHkfjA==}
+  /@umi-ag/sui-sdk@0.202308.1:
+    resolution: {integrity: sha512-6dvqYS66uguV9I4QHepozWDHeifhDBod+bkya7PEKl0Bwm6lw2/ThfwEvY9Rgg8RiPdS4wJMQ/wqHmZXD7AAeQ==}
     dependencies:
-      '@mysten/sui.js': 0.37.1
+      '@mysten/sui.js': 0.39.0
       cross-fetch: 3.1.8
       decimal.js: 10.4.3
       dotenv: 16.3.1
