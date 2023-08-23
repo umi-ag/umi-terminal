@@ -16,12 +16,7 @@ import { CoinIcon } from './CoinIcon';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import type { ModalProps } from '../ModalBase';
 import { Modal } from '../ModalBase';
-
-export const InputBase: React.FC = (props) => {
-  return (
-    <input type="text" inputMode="numeric" className="text-3xl font-semibold text-right bg-transparent outline-none w-[70%]" { ...props } />
-  );
-};
+import { InputBase } from '../InputBase';
 
 export type SwapWidgetProps = {
   /**
