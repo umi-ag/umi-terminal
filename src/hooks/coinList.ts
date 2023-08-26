@@ -1,5 +1,6 @@
 import type { Chain, CoinProfile } from '../type';
 import { fetchCoinList } from '@umi-ag/sui-coin-list';
+import { match } from 'ts-pattern';
 import useSWR from 'swr';
 
 const SUI = {
@@ -42,11 +43,20 @@ export const useCoinList = ({
 }: {
   chain: Chain;
 }) => {
-  if (chain === 'sui') {
-    return useSuiCoinList();
-  }
+  const r = match(chain)
+    .with('sui', () => useSuiCoinList())
+    .otherwise(() => {
+      throw new Error(`Unsupported chain: ${chain}`);
+    });
 
-  throw new Error(`Unsupported chain: ${chain}`);
+  const coinList = r.data ?? [];
+
+  return {
+    ...r,
+    coinList,
+    // TODO: Support fuzzy search
+    findCoin: (coinType: string) => coinList.find(c => c.coinType === coinType),
+  };
 };
 
 export const initialCoinSelection: Record<Chain, { source: CoinProfile, target: CoinProfile }> = {

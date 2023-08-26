@@ -4,6 +4,7 @@ import { fetchQuoteFromUmi } from '@umi-ag/sui-sdk';
 import { useDebounce } from '@react-hook/debounce';
 import Decimal from 'decimal.js';
 import useSWR from 'swr';
+import { match } from 'ts-pattern';
 
 export const useQuoteQuery = (init: QuoteQuery) => {
   const [quoteQuery, setQuoteQuery] = useDebounce(init, 1000);
@@ -38,9 +39,14 @@ export const useQuoteApi = ({
   chain: Chain;
   quoteQuery: QuoteQuery;
 }) => {
-  if (chain === 'sui') {
-    return useSuiQuoteApi(quoteQuery);
-  }
+  const r = match(chain)
+    .with('sui', () => useSuiQuoteApi(quoteQuery))
+    .otherwise(() => {
+      throw new Error(`Unsupported chain: ${chain}`);
+    });
 
-  throw new Error(`Unsupported chain: ${chain}`);
+  return {
+    ...r,
+    quote: r.data ?? null,
+  };
 };

@@ -1,7 +1,8 @@
 import type { JsonRpcProvider } from '@mysten/sui.js';
-import type { Chain } from '../type';
+import type { Chain, CoinBalance } from '../type';
 import { Decimal } from 'decimal.js';
 import useSWR from 'swr';
+import { match } from 'ts-pattern';
 
 export const useSuiBalance = ({
   provider,
@@ -28,7 +29,7 @@ export const useSuiBalance = ({
       return balanceList.map(b => ({
         coinType: b.coinType,
         totalBalance: new Decimal(b.totalBalance),
-      }));
+      }) as CoinBalance);
     },
     {
       refreshInterval: 60_000, // 1 min
@@ -49,9 +50,17 @@ export const useBalance = ({
   accountAddress?: string;
   provider?: JsonRpcProvider;
 }) => {
-  if (chain === 'sui') {
-    return useSuiBalance({ provider, accountAddress });
-  }
+  const r = match(chain)
+    .with('sui', () => useSuiBalance({ provider, accountAddress }))
+    .otherwise(() => {
+      throw new Error(`Unsupported chain: ${chain}`);
+    });
 
-  throw new Error(`Unsupported chain: ${chain}`);
+  const balances = r.data ?? [];
+
+  return {
+    ...r,
+    balances,
+    findBalance: (coinType: string) => balances.find(b => b.coinType === coinType),
+  };
 };
