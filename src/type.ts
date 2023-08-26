@@ -1,3 +1,5 @@
+import type Decimal from 'decimal.js';
+
 export type ValueOf<T> = T[keyof T];
 
 export const Chain = {
@@ -19,6 +21,11 @@ export type CoinProfile = {
   name: string;
   symbol: string;
   description: string;
-  iconUrl: string| null;
+  iconUrl: string | null;
   id: string;
+};
+
+export type CoinBalance = {
+  coinType: string;
+  totalBalance: Decimal;
 };
