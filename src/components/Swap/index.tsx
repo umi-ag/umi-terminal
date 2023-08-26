@@ -42,7 +42,7 @@ export type SwapWidgetProps = {
 // TODO: Refactor
 const UmiSwapWidgetContent: React.FC<SwapWidgetProps> = (props) => {
   const [chain, setChain] = useState<Chain>('sui');
-  const balances = useBalance({
+  const { balances } = useBalance({
     chain,
     provider: props.provider,
     accountAddress: props.accountAddress,
@@ -52,7 +52,7 @@ const UmiSwapWidgetContent: React.FC<SwapWidgetProps> = (props) => {
     chain,
   });
 
-  const currentBalance = () => new Decimal(balances.data?.find(b => b.coinType === sourceCoin.coinType)?.totalBalance ?? 0)
+  const currentBalance = () => new Decimal(balances.find(b => b.coinType === sourceCoin.coinType)?.totalBalance ?? 0)
     .div(10 ** sourceCoin.decimals)
     .toNumber();
 
