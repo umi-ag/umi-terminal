@@ -4,22 +4,28 @@ import type { Chain, CoinProfile } from '../type';
 import type { QuoteQuery } from '@umi-ag/sui-sdk';
 import { initialCoinSelection, useCoinList } from '../hooks/coinList';
 import { useBalance } from '../hooks/balance';
+import { useQuoteApi, useQuoteQuery } from '../hooks/quoteApi';
 
 type State = {
   chain: Chain;
   sourceCoin: CoinProfile;
   targetCoin: CoinProfile;
   sourceVolume: number;
+  targetVolume: number;
   quoteQuery: QuoteQuery;
-  // quote: TradingRoute | null;
+  coinListQuery: ReturnType<typeof useCoinList>;
+  balanceQuery: ReturnType<typeof useBalance>;
+  quoteApiQuery: ReturnType<typeof useQuoteApi>;
   // quote: () => (TradingRoute | null);
   setChain: (chain: Chain) => void;
   setSourceCoin: (coinType: string) => void;
   setTargetCoin: (coinType: string) => void;
   switchCoin: () => void;
   setSourceVolume: (volume: number) => void;
-  // maxSourceVolume: () => void;
-  // routeDigest: () => string | undefined;
+  maxSourceVolume: () => void;
+  currentBalance: () => number | undefined;
+  setQuoteQuery: (quoteQuery: QuoteQuery) => void;
+  routeDigest: () => string | undefined;
 };
 
 export type UseTradeContextProps = {
@@ -28,32 +34,43 @@ export type UseTradeContextProps = {
   // balances: CoinBalance[];
 };
 
-export const useTradeContext = ({ chain }: UseTradeContextProps) => {
+// export const useTradeContext = ({ chain }: UseTradeContextProps) => {
+export const useTradeContext = create<State>()((set, get) => {
   // const { balances, findBalance } = useBalance({ chain });
   // const { coinList } = useCoinList({ chain });
+  const chain = 'sui';
   const balanceQuery = useBalance({ chain });
   const coinListQuery = useCoinList({ chain });
 
   const initialCoin = initialCoinSelection[chain];
 
-  return create<State>()((set, get) => ({
-    chain: 'sui',
+  const { quoteQuery, setQuoteQuery } = useQuoteQuery({
+    sourceAmount: 0,
+    sourceCoin: initialCoin.source.coinType,
+    targetCoin: initialCoin.target.coinType,
+  });
+
+  const quoteApiQuery = useQuoteApi({
+    chain,
+    quoteQuery,
+  });
+
+  return {
+    chain,
     coinListQuery,
     balanceQuery,
     sourceCoin: initialCoin.source,
     targetCoin: initialCoin.target,
     sourceVolume: 0,
-    quoteQuery: {
-      sourceAmount: 0,
-      sourceCoin: initialCoin.source.coinType,
-      targetCoin: initialCoin.target.coinType,
-    },
+    targetVolume: 0,
+    quoteQuery,
     // quote: null,
     // quote: () => {
     //   const quoteQuery = get().quoteQuery;
     //   const { data } = useQuoteApi({ chain, quoteQuery });
     //   return data ?? null;
     // },
+    quoteApiQuery,
     setChain: (chain) => {
       set({
         chain,
@@ -119,13 +136,27 @@ export const useTradeContext = ({ chain }: UseTradeContextProps) => {
       if (!balance) return;
       set({ sourceVolume: balance });
     },
-    // routeDigest: () => {
-    //   // if (!quote.data) return;
-    //   const quote = get().quote();
-    //   const venues = [...new Set(quote.paths.flatMap(p => p.path.steps.flatMap(s => s.venues.flatMap(v => v.venue.name))))];
-    //   const venuesCount = venues.length;
-    //   const venueNames = venues.join(', ');
-    //   return `Swap via ${venuesCount} venue${venuesCount > 1 ? 's' : ''}: ${venueNames}`;
-    // },
-  }));
-};
+    routeDigest: () => {
+      const quote = get().quoteApiQuery.quote;
+      if (!quote) return;
+      const venues = [...new Set(quote.paths
+        .flatMap(p => p.path.steps
+          .flatMap(s => s.venues
+            .flatMap(v => v.venue.name)))),
+      ];
+      const venuesCount = venues.length;
+      const venueNames = venues.join(', ');
+      return `Swap via ${venuesCount} venue${venuesCount > 1 ? 's' : ''}: ${venueNames}`;
+    },
+    currentBalance: () => {
+      const balance = balanceQuery.findBalance(get().sourceCoin.coinType)
+        ?.totalBalance;
+
+      if (!balance) return;
+      return balance
+        .div(10 ** get().sourceCoin.decimals)
+        .toNumber();
+    },
+    setQuoteQuery,
+  };
+});
