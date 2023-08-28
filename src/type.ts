@@ -1,3 +1,4 @@
+import type { JsonRpcProvider } from '@mysten/sui.js';
 import type Decimal from 'decimal.js';
 
 export type ValueOf<T> = T[keyof T];
@@ -29,3 +30,25 @@ export type CoinBalance = {
   coinType: string;
   totalBalance: Decimal;
 };
+
+export type UmiTerminalProps = {
+  /**
+   * The address of the account to use for the swap.
+   */
+  accountAddress?: string;
+  /**
+   * The wallet to use for the swap.
+   */
+  wallet?: {
+    signAndExecuteTransactionBlock: (p: any) => Promise<any>;
+  } | null;
+  /**
+   * Sui JsonRpcProvider
+   */
+  provider?: JsonRpcProvider;
+  /**
+   * Partner policy object id for Sui
+   */
+  partnerPolicyObjectId?: string;
+};
+

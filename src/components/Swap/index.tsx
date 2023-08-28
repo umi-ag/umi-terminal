@@ -4,8 +4,7 @@ import { NumericFormat } from 'react-number-format';
 import umiLogo from '../../assets/umi.jpeg';
 import refreshIcon from '../../assets/refresh.svg';
 import './style.scss';
-import type { JsonRpcProvider } from '@mysten/sui.js';
-import type { Chain } from '../../type';
+import type { Chain, UmiTerminalProps } from '../../type';
 import { CoinIcon } from './CoinIcon';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import type { ModalProps } from '../ModalBase';
@@ -15,29 +14,8 @@ import { useTradeContext } from '../../store';
 import { buildTransactionBlockForUmiAgSwap } from '@umi-ag/sui-sdk';
 import debounce from 'just-debounce';
 
-export type SwapWidgetProps = {
-  /**
-   * The address of the account to use for the swap.
-   */
-  accountAddress?: string;
-  /**
-   * The wallet to use for the swap.
-   */
-  wallet?: {
-    signAndExecuteTransactionBlock: (p: any) => Promise<any>;
-  } | null;
-  /**
-   * Sui JsonRpcProvider
-   */
-  provider?: JsonRpcProvider;
-  /**
-   * Partner policy object id for Sui
-   */
-  partnerPolicyObjectId?: string;
-};
-
 // TODO: Refactor
-const UmiSwapWidgetContent: React.FC<SwapWidgetProps> = (props) => {
+const UmiSwapWidgetContent: React.FC<UmiTerminalProps> = (props) => {
   const {
     chain,
     quoteQuery,
@@ -57,7 +35,7 @@ const UmiSwapWidgetContent: React.FC<SwapWidgetProps> = (props) => {
     setQuoteQuery,
     targetVolume,
     quoteApiQuery,
-  } = useTradeContext();
+  } = useTradeContext(props);
 
   const { coinList } = coinListQuery;
   const { quote } = quoteApiQuery;
@@ -188,7 +166,7 @@ const UmiSwapWidgetContent: React.FC<SwapWidgetProps> = (props) => {
   );
 };
 
-export const UmiSwapWidget: React.FC<SwapWidgetProps> = (props) => {
+export const UmiSwapWidget: React.FC<UmiTerminalProps> = (props) => {
   const queryClient = new QueryClient();
 
   return (
@@ -198,7 +176,7 @@ export const UmiSwapWidget: React.FC<SwapWidgetProps> = (props) => {
   );
 };
 
-export type UmiSwapModalProps = SwapWidgetProps & ModalProps & {
+export type UmiSwapModalProps = UmiTerminalProps & ModalProps & {
   hideButton?: boolean;
 };
 
