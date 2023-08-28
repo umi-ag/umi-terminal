@@ -1,6 +1,8 @@
 import type { Step, TradingRoute, WeightedHop } from '@umi-ag/sui-sdk';
 
-export const routeDigest = (quote: TradingRoute) => {
+export const routeDigest = (quote: TradingRoute | null) => {
+  if (!quote) return 'No route found';
+
   // Extract venue names from a given step.
   const extractVenuesFromSteps = (step: Step) => step.venues.flatMap(v => v.venue.name);
 

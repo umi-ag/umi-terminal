@@ -1,11 +1,58 @@
-import type { Chain } from '../type';
+import { useBalance } from '../hooks/balance';
+import { useCoinList } from '../hooks/coinList';
+import { useQuoteApi, useQuoteQuery } from '../hooks/quoteApi';
+import type { UmiTerminalProps } from '../type';
+import { useCoinStore } from './coin';
+import { useConfigStore } from './config';
 
-export type SwapContextState = {
-  chain: Chain;
+// export type SwapContextState = {
+//   chain: Chain;
 
-};
+// };
 
-export type SwapContextAction = {
+// export type SwapContextAction = {
+// };
+
+export const useSwapContext = ({
+  accountAddress,
+  provider,
+  // partnerPolicyObjectId,
+  // wallet,
+}: UmiTerminalProps) => {
+  const configStore = useConfigStore();
+  const chain = configStore.chain;
+
+  const coinStore = useCoinStore();
+  if (coinStore.sourceCoin === null || coinStore.targetCoin === null) {
+    coinStore.initCoins(chain);
+  }
+
+  const { coinList } = useCoinList({ chain });
+  const { balances, mutate: reloadBalances } = useBalance({ chain, accountAddress, provider });
+
+  const { quoteQuery, setQuoteQuery } = useQuoteQuery({
+    sourceAmount: 0,
+    sourceCoin: coinStore.sourceCoin?.coinType ?? '',
+    targetCoin: coinStore.targetCoin?.coinType ?? '',
+  });
+
+  const { quote, mutate: reloadQuote } = useQuoteApi({ chain, quoteQuery });
+
+  return {
+    ...configStore,
+    ...coinStore,
+    setSourceCoin: (coinType: string) => coinStore.setSourceCoin(coinList, coinType),
+    setTargetCoin: (coinType: string) => coinStore.setTargetCoin(coinList, coinType),
+    maxSourceVolume: () => coinStore.maxSourceVolume(balances),
+    sourceCoinBalance: () => coinStore.sourceCoinBalance(balances),
+    coinList,
+    balances,
+    reloadBalances,
+    quoteQuery,
+    setQuoteQuery,
+    quote,
+    reloadQuote,
+  };
 };
 
 // type State = {

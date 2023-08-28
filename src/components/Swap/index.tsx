@@ -10,30 +10,30 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import type { ModalProps } from '../ModalBase';
 import { Modal } from '../ModalBase';
 import { InputBase } from '../InputBase';
-import { useTradeContext } from '../../store';
+import { useSwapContext } from '../../store';
 import { buildTransactionBlockForUmiAgSwap } from '@umi-ag/sui-sdk';
 import debounce from 'just-debounce';
+import { routeDigest } from '../../utils';
 
 // TODO: Refactor
 const UmiSwapWidgetContent: React.FC<UmiTerminalProps> = (props) => {
   const {
+    sourceCoin,
+    sourceVolume,
+    targetCoin,
+    targetVolume,
     setChain,
     setSourceCoin,
     setSourceVolume,
     setTargetCoin,
-    sourceCoin,
-    sourceVolume,
-    targetCoin,
     maxSourceVolume,
     switchCoin,
-    currentBalance,
-    routeDigest,
-    targetVolume,
+    sourceCoinBalance,
     coinList,
     quote,
     reloadBalances,
     reloadQuote,
-  } = useTradeContext();
+  } = useSwapContext(props);
 
   // const { coinList } = coinListQuery;
   // const { quote } = quoteApiQuery;
@@ -92,20 +92,20 @@ const UmiSwapWidgetContent: React.FC<UmiTerminalProps> = (props) => {
         <div className="flex items-center justify-between mb-2">
           <span className="text-left text-gray-500">From</span>
           {
-            currentBalance([]) && <button className="px-2 py-1 text-sm text-gray-100 bg-blue-400 rounded-md" onClick={() => maxSourceVolume([])}>
-              Max: {currentBalance([])}
+            sourceCoinBalance() && <button className="px-2 py-1 text-sm text-gray-100 bg-blue-400 rounded-md" onClick={maxSourceVolume}>
+              Max: {sourceCoinBalance()}
             </button>
           }
         </div>
         <div className="flex items-center justify-between mb-2">
           <div className="w-8 h-8 mr-2">
-            <CoinIcon iconUrl={sourceCoin.iconUrl} />
+            <CoinIcon iconUrl={sourceCoin?.iconUrl} />
           </div>
 
           <select
             className="text-2xl bg-transparent outline-none cursor-pointer min-w-[4em]"
             value={sourceCoin?.coinType}
-            onChange={e => setSourceCoin([], e.currentTarget.value)}
+            onChange={e => setSourceCoin(e.currentTarget.value)}
           >
             {coinList.map((coin) => (
               <option key={coin.id} value={coin.coinType}>{coin.symbol}</option>
@@ -131,13 +131,13 @@ const UmiSwapWidgetContent: React.FC<UmiTerminalProps> = (props) => {
         <p className="mb-2 text-left text-gray-500">To</p>
         <div className="flex items-center justify-between mb-2">
           <div className="w-8 h-8 mr-2">
-            <CoinIcon iconUrl={targetCoin.iconUrl} />
+            <CoinIcon iconUrl={targetCoin?.iconUrl} />
           </div>
 
           <select
             className="text-2xl bg-transparent outline-none cursor-pointer min-w-[4em]"
             value={targetCoin?.coinType}
-            onChange={e => setTargetCoin([], e.currentTarget.value)}
+            onChange={e => setTargetCoin(e.currentTarget.value)}
           >
             {coinList.map((coin) => (
               <option key={coin.id} value={coin.coinType}>{coin.symbol}</option>
@@ -152,7 +152,7 @@ const UmiSwapWidgetContent: React.FC<UmiTerminalProps> = (props) => {
         <p className="text-left text-gray-500">{targetCoin?.name}</p>
       </div>
 
-      <p className="h-4 px-2 mb-4 text-gray-500">{routeDigest()}</p>
+      <p className="h-4 px-2 mb-4 text-gray-500">{routeDigest(quote)}</p>
 
       <button
         className="w-full p-4 text-2xl rounded-full bg-emerald-300 hover:bg-emerald-400"
