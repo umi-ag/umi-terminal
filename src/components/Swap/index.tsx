@@ -15,7 +15,9 @@ import { buildTransactionBlockForUmiAgSwap } from '@umi-ag/sui-sdk';
 import debounce from 'just-debounce';
 import { routeDigest } from '../../utils';
 
-// TODO: Refactor
+// add path alias
+// divide into components
+
 const UmiSwapWidgetContent: React.FC<UmiTerminalProps> = (props) => {
   const {
     sourceCoin,
@@ -35,10 +37,6 @@ const UmiSwapWidgetContent: React.FC<UmiTerminalProps> = (props) => {
     reloadQuote,
   } = useSwapContext(props);
 
-  // const { coinList } = coinListQuery;
-  // const { quote } = quoteApiQuery;
-  // const { balances } = balanceQuery;
-
   // TODO: Add support for Aptos
   const swap = async () => {
     if (!props.wallet) return;
@@ -57,7 +55,6 @@ const UmiSwapWidgetContent: React.FC<UmiTerminalProps> = (props) => {
     console.log(digest);
 
     await reloadBalances();
-
   };
 
   const refresh = debounce(
