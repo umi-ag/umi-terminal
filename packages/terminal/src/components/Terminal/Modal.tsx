@@ -5,9 +5,10 @@ import type { UmiTerminalProps } from '@/type';
 import React, { useState } from 'react';
 import { UmiTerminal } from './Base';
 
-export type UmiSwapModalProps = UmiTerminalProps & ModalProps & {
-  hideButton?: boolean;
-};
+export type UmiSwapModalProps = UmiTerminalProps &
+  ModalProps & {
+    hideButton?: boolean;
+  };
 
 export const UmiTerminalModal: React.FC<UmiSwapModalProps> = (props) => {
   const [isOpen, setIsOpen] = useState<boolean>(props.isOpen ?? false);
@@ -29,7 +30,12 @@ export const UmiTerminalModal: React.FC<UmiSwapModalProps> = (props) => {
         <div className="w-[600px]">
           <UmiTerminal {...props} />
           <div className="grid place-items-center">
-            <button className="w-8 h-8 mt-4 bg-gray-100 rounded-full" onClick={() => setIsOpen(false)}>✗</button>
+            <button
+              className="w-8 h-8 mt-4 bg-gray-100 rounded-full"
+              onClick={() => setIsOpen(false)}
+            >
+              ✗
+            </button>
           </div>
         </div>
       </Modal>

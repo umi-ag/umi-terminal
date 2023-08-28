@@ -3,5 +3,8 @@
   "eslint.workingDirectories": [
     "apps/web",
     "packages/terminal"
-  ]
+  ],
+  "editor.codeActionsOnSave": {
+    "source.fixAll": true
+  }
 }

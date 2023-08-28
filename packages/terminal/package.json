@@ -17,9 +17,9 @@
     "./style.css": "./dist/style.css"
   },
   "scripts": {
-    "dev": "vite",
+    "dev": "vite build --watch",
+    "dev:ui": "vite",
     "build": "tsc && vite build",
-    "build:ui": "MODE=ui vite build",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "analyze": "vite-bundle-visualizer",
