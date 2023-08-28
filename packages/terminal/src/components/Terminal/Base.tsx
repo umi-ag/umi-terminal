@@ -1,3 +1,4 @@
+'use client';
 /* eslint-disable max-len */
 import refreshIcon from '@/assets/refresh.svg';
 import umiLogo from '@/assets/umi.jpeg';

@@ -1,0 +1,7 @@
+{
+  "editor.tabSize": 2,
+  "eslint.workingDirectories": [
+    "apps/web",
+    "packages/terminal"
+  ]
+}
