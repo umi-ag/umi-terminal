@@ -6,7 +6,6 @@ export type CoinStoreState = {
   sourceCoin: CoinProfile | null;
   targetCoin: CoinProfile | null;
   sourceVolume: number;
-  // targetVolume: number;
 };
 
 export type CoinStoreAction = {
@@ -14,7 +13,6 @@ export type CoinStoreAction = {
   setSourceCoin: (coinList: CoinProfile[], coinType: string) => void;
   setTargetCoin: (coinList: CoinProfile[], coinType: string) => void;
   setSourceVolume: (volume: number) => void;
-  // setTargetVolume: (volume: number) => void;
   switchCoin: () => void;
   maxSourceVolume: (balances: CoinBalance[]) => void;
   sourceCoinBalance: (balances: CoinBalance[]) => number | undefined;
@@ -61,12 +59,6 @@ export const useCoinStore = create<CoinStore>((set, get) => {
     });
   };
 
-  // const setTargetVolume = (volume: number) => {
-  //   set({
-  //     targetVolume: volume,
-  //   });
-  // };
-
   const maxSourceVolume = (balances: CoinBalance[]) => {
     const sourceCoin = get().sourceCoin;
     if (!sourceCoin) return;
@@ -97,12 +89,10 @@ export const useCoinStore = create<CoinStore>((set, get) => {
     sourceCoin: null,
     targetCoin: null,
     sourceVolume: 0,
-    // targetVolume: 0,
     initCoins,
     setSourceCoin,
     setTargetCoin,
     setSourceVolume,
-    // setTargetVolume,
     switchCoin,
     maxSourceVolume,
     sourceCoinBalance,
