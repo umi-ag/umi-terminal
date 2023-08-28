@@ -17,8 +17,6 @@ import debounce from 'just-debounce';
 // TODO: Refactor
 const UmiSwapWidgetContent: React.FC<UmiTerminalProps> = (props) => {
   const {
-    chain,
-    quoteQuery,
     setChain,
     setSourceCoin,
     setSourceVolume,
@@ -29,16 +27,16 @@ const UmiSwapWidgetContent: React.FC<UmiTerminalProps> = (props) => {
     maxSourceVolume,
     switchCoin,
     currentBalance,
-    balanceQuery,
-    coinListQuery,
     routeDigest,
-    setQuoteQuery,
     targetVolume,
-    quoteApiQuery,
-  } = useTradeContext(props);
+    coinList,
+    quote,
+    reloadBalances,
+    reloadQuote,
+  } = useTradeContext();
 
-  const { coinList } = coinListQuery;
-  const { quote } = quoteApiQuery;
+  // const { coinList } = coinListQuery;
+  // const { quote } = quoteApiQuery;
   // const { balances } = balanceQuery;
 
   // TODO: Add support for Aptos
@@ -58,14 +56,14 @@ const UmiSwapWidgetContent: React.FC<UmiTerminalProps> = (props) => {
     const { digest } = await props.wallet.signAndExecuteTransactionBlock({ transactionBlock: txb });
     console.log(digest);
 
-    await balanceQuery.mutate();
+    await reloadBalances();
 
   };
 
   const refresh = debounce(
     async () => {
-      await balanceQuery.mutate();
-      await quoteApiQuery.mutate();
+      await reloadBalances();
+      await reloadQuote();
     },
     1000,
   );
@@ -94,8 +92,8 @@ const UmiSwapWidgetContent: React.FC<UmiTerminalProps> = (props) => {
         <div className="flex items-center justify-between mb-2">
           <span className="text-left text-gray-500">From</span>
           {
-            currentBalance() && <button className="px-2 py-1 text-sm text-gray-100 bg-blue-400 rounded-md" onClick={maxSourceVolume}>
-              Max: {currentBalance()}
+            currentBalance([]) && <button className="px-2 py-1 text-sm text-gray-100 bg-blue-400 rounded-md" onClick={() => maxSourceVolume([])}>
+              Max: {currentBalance([])}
             </button>
           }
         </div>
@@ -107,7 +105,7 @@ const UmiSwapWidgetContent: React.FC<UmiTerminalProps> = (props) => {
           <select
             className="text-2xl bg-transparent outline-none cursor-pointer min-w-[4em]"
             value={sourceCoin?.coinType}
-            onChange={e => setSourceCoin(e.currentTarget.value)}
+            onChange={e => setSourceCoin([], e.currentTarget.value)}
           >
             {coinList.map((coin) => (
               <option key={coin.id} value={coin.coinType}>{coin.symbol}</option>
@@ -139,7 +137,7 @@ const UmiSwapWidgetContent: React.FC<UmiTerminalProps> = (props) => {
           <select
             className="text-2xl bg-transparent outline-none cursor-pointer min-w-[4em]"
             value={targetCoin?.coinType}
-            onChange={e => setTargetCoin(e.currentTarget.value)}
+            onChange={e => setTargetCoin([], e.currentTarget.value)}
           >
             {coinList.map((coin) => (
               <option key={coin.id} value={coin.coinType}>{coin.symbol}</option>
