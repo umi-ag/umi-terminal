@@ -13,8 +13,6 @@ import { NumericFormat } from 'react-number-format';
 import { SwitchButton } from '../SwitchButton';
 import './style.scss';
 
-// divide into components
-
 const Header: React.FC<UmiTerminalProps> = (props) => {
   const { setChain, reloadBalances, reloadQuote } = useSwapContext(props);
 
@@ -54,8 +52,6 @@ const SourceInput: React.FC<UmiTerminalProps> = (props) => {
     sourceCoinBalance,
     coinList,
   } = useSwapContext(props);
-
-  console.log({ sourceCoinBalance: sourceCoinBalance() });
 
   return (
     <div className="px-4 py-2 bg-slate-100 border-slate-200 border-[1px] rounded-xl">
@@ -139,6 +135,7 @@ const RouteDigest: React.FC<UmiTerminalProps> = (props) => {
 const SwapButton: React.FC<UmiTerminalProps> = (props) => {
   const { quote, reloadBalances } = useSwapContext(props);
 
+  // TODO: Add support for Aptos
   const swap = async () => {
     if (!props.wallet) return;
     if (!props.provider) return;
@@ -169,117 +166,15 @@ const SwapButton: React.FC<UmiTerminalProps> = (props) => {
 };
 
 const UmiTerminalBase: React.FC<UmiTerminalProps> = (props) => {
-  const {
-    sourceCoin,
-    sourceVolume,
-    targetCoin,
-    targetVolume,
-    setChain,
-    setSourceCoin,
-    setSourceVolume,
-    setTargetCoin,
-    maxSourceVolume,
-    switchCoin,
-    sourceCoinBalance,
-    coinList,
-    quote,
-    reloadBalances,
-    reloadQuote,
-  } = useSwapContext(props);
-
-  // TODO: Add support for Aptos
+  const { switchCoin } = useSwapContext(props);
 
   return (
     <div className="w-full p-4 text-black bg-white swap-form rounded-2xl">
-      {/* <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center justify-between gap-4"><img src={umiLogo} alt="umi logo" className="w-8 h-8 rounded-full" /> Umi.ag</div>
-        <div className="flex justify-between gap-4">
-          <select
-            className="h-8 px-2 rounded-full outline-none cursor-pointer border-[1px] bg-slate-50"
-            onChange={e => setChain(e.currentTarget.value as Chain)}
-            defaultValue="Network"
-          >
-            <option value="sui">Sui</option>
-            <option value="aptos" disabled>Aptos</option>
-          </select>
-          <button className="w-8 h-8 rounded-full outline-none grid place-items-center border-[1px] bg-slate-50" onClick={refresh}>
-            <img src={refreshIcon} alt="🔃" className="w-6 h-6" />
-          </button>
-          <button className="h-8 px-2 rounded-full outline-none border-[1px] bg-slate-50">0.5%</button>
-        </div>
-      </div> */}
       <Header {...props} />
-
-      {/* <div className="px-4 py-2 bg-slate-100 border-slate-200 border-[1px] rounded-xl">
-        <div className="flex items-center justify-between mb-2">
-          <span className="text-left text-gray-500">From</span>
-          {
-            sourceCoinBalance() && <button className="px-2 py-1 text-sm text-gray-100 bg-blue-400 rounded-md" onClick={maxSourceVolume}>
-              Max: {sourceCoinBalance()}
-            </button>
-          }
-        </div>
-        <div className="flex items-center justify-between mb-2">
-          <div className="w-8 h-8 mr-2">
-            <CoinIcon iconUrl={sourceCoin?.iconUrl} />
-          </div>
-
-          <select
-            className="text-2xl bg-transparent outline-none cursor-pointer min-w-[4em]"
-            value={sourceCoin?.coinType}
-            onChange={e => setSourceCoin(e.currentTarget.value)}
-          >
-            {coinList.map((coin) => (
-              <option key={coin.id} value={coin.coinType}>{coin.symbol}</option>
-            ))}
-          </select>
-          <NumericFormat
-            value={sourceVolume}
-            onValueChange={val => setSourceVolume(val.floatValue ?? 0)}
-            customInput={InputBase}
-          />
-        </div>
-        <p className="text-left text-gray-500">{sourceCoin?.name}</p>
-      </div> */}
       <SourceInput {...props}/>
-
       <SwitchButton onClick={switchCoin} />
-
-      {/* <div className="px-4 py-2 mb-4 bg-white border-slate-200 border-[1px] rounded-xl">
-        <p className="mb-2 text-left text-gray-500">To</p>
-        <div className="flex items-center justify-between mb-2">
-          <div className="w-8 h-8 mr-2">
-            <CoinIcon iconUrl={targetCoin?.iconUrl} />
-          </div>
-
-          <select
-            className="text-2xl bg-transparent outline-none cursor-pointer min-w-[4em]"
-            value={targetCoin?.coinType}
-            onChange={e => setTargetCoin(e.currentTarget.value)}
-          >
-            {coinList.map((coin) => (
-              <option key={coin.id} value={coin.coinType}>{coin.symbol}</option>
-            ))}
-          </select>
-          <NumericFormat
-            customInput={InputBase}
-            value={targetVolume}
-            disabled
-          />
-        </div>
-        <p className="text-left text-gray-500">{targetCoin?.name}</p>
-      </div> */}
       <TargetInput {...props}/>
-
-      {/* <p className="h-4 px-2 mb-4 text-gray-500">{routeDigest(quote)}</p> */}
       <RouteDigest {...props}/>
-
-      {/* <button
-        className="w-full p-4 text-2xl rounded-full bg-emerald-300 hover:bg-emerald-400"
-        onClick={swap}
-      >
-        Swap
-      </button> */}
       <SwapButton {...props}/>
     </div>
   );
