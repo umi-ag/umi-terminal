@@ -1,7 +1,7 @@
 import { JsonRpcProvider, mainnetConnection } from '@mysten/sui.js';
 import { ConnectButton, useWalletKit } from '@mysten/wallet-kit';
 import './App.scss';
-import { UmiSwapModal, UmiSwapWidget } from './components/Terminal';
+import { UmiTerminal, UmiTerminalModal } from './components/Terminal';
 
 function App() {
   const { currentAccount, currentWallet } = useWalletKit();
@@ -11,7 +11,7 @@ function App() {
     <>
       <div className="p-16 w-100vw h-100vh">
         <div className="mx-auto my-0 w-[600px]">
-          <UmiSwapWidget
+          <UmiTerminal
             accountAddress={currentAccount?.address}
             wallet={currentWallet}
             provider={provider}
@@ -19,7 +19,7 @@ function App() {
         </div>
       </div>
 
-      <UmiSwapModal isOpen={false} />
+      <UmiTerminalModal isOpen={false} />
 
       <div className="grid place-items-center">
         <ConnectButton />
