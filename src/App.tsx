@@ -1,7 +1,7 @@
-import './App.scss';
-import { UmiSwapModal, UmiSwapWidget } from './components/Swap';
-import { ConnectButton, useWalletKit } from '@mysten/wallet-kit';
 import { JsonRpcProvider, mainnetConnection } from '@mysten/sui.js';
+import { ConnectButton, useWalletKit } from '@mysten/wallet-kit';
+import './App.scss';
+import { UmiSwapModal, UmiSwapWidget } from './components/Terminal';
 
 function App() {
   const { currentAccount, currentWallet } = useWalletKit();
