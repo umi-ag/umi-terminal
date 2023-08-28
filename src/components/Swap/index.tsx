@@ -1,19 +1,19 @@
 /* eslint-disable max-len */
-import React, { useState } from 'react';
-import { NumericFormat } from 'react-number-format';
-import umiLogo from '../../assets/umi.jpeg';
-import refreshIcon from '../../assets/refresh.svg';
-import './style.scss';
-import type { Chain, UmiTerminalProps } from '../../type';
-import { CoinIcon } from './CoinIcon';
+import refreshIcon from '@/assets/refresh.svg';
+import umiLogo from '@/assets/umi.jpeg';
+import { InputBase } from '@/components/InputBase';
+import type { ModalProps } from '@/components/ModalBase';
+import { Modal } from '@/components/ModalBase';
+import { useSwapContext } from '@/store';
+import type { Chain, UmiTerminalProps } from '@/type';
+import { routeDigest } from '@/utils';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import type { ModalProps } from '../ModalBase';
-import { Modal } from '../ModalBase';
-import { InputBase } from '../InputBase';
-import { useSwapContext } from '../../store';
 import { buildTransactionBlockForUmiAgSwap } from '@umi-ag/sui-sdk';
 import debounce from 'just-debounce';
-import { routeDigest } from '../../utils';
+import React, { useState } from 'react';
+import { NumericFormat } from 'react-number-format';
+import { CoinIcon } from './CoinIcon';
+import './style.scss';
 
 // add path alias
 // divide into components
@@ -58,10 +58,7 @@ const UmiSwapWidgetContent: React.FC<UmiTerminalProps> = (props) => {
   };
 
   const refresh = debounce(
-    async () => {
-      await reloadBalances();
-      await reloadQuote();
-    },
+    () => Promise.allSettled([reloadBalances(), reloadQuote()]),
     1000,
   );
 
