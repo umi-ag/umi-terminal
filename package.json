@@ -1,6 +1,6 @@
 {
   "name": "@umi-ag/swap-widget",
-  "version": "0.202308.0",
+  "version": "0.202308.1",
   "type": "module",
   "files": [
     "dist"
