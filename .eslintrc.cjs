@@ -17,6 +17,7 @@ module.exports = {
   ],
   'settings': {
     'import/resolver': {
+      typescript: true,
       'node': {
         'moduleDirectory': ['node_modules', './'],
         'extensions': ['.js', '.jsx', '.ts', '.tsx'],
