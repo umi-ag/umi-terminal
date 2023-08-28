@@ -1,7 +1,7 @@
-import type { Chain, CoinProfile } from '../type';
+import type { Chain, CoinProfile } from '@/type';
 import { fetchCoinList } from '@umi-ag/sui-coin-list';
-import { match } from 'ts-pattern';
 import useSWR from 'swr';
+import { match } from 'ts-pattern';
 
 const SUI = {
   'coinType': '0x2::sui::SUI',

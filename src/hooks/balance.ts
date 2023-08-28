@@ -1,5 +1,5 @@
+import type { Chain, CoinBalance } from '@/type';
 import type { JsonRpcProvider } from '@mysten/sui.js';
-import type { Chain, CoinBalance } from '../type';
 import { Decimal } from 'decimal.js';
 import useSWR from 'swr';
 import { match } from 'ts-pattern';

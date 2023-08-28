@@ -1,11 +1,11 @@
+import { useBalance } from '@/hooks/balance';
+import { useCoinList } from '@/hooks/coinList';
+import { useQuoteApi, useQuoteQuery } from '@/hooks/quoteApi';
+import type { UmiTerminalProps } from '@/type';
+import Decimal from 'decimal.js';
 import { useEffect } from 'react';
-import { useBalance } from '../hooks/balance';
-import { useCoinList } from '../hooks/coinList';
-import { useQuoteApi, useQuoteQuery } from '../hooks/quoteApi';
-import type { UmiTerminalProps } from '../type';
 import { useCoinStore } from './coin';
 import { useConfigStore } from './config';
-import Decimal from 'decimal.js';
 
 export type SwapContextProps = Pick<UmiTerminalProps, 'accountAddress' | 'provider'>;
 

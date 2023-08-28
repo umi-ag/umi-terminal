@@ -1,7 +1,7 @@
-import type { Chain } from '../type';
+import type { Chain } from '@/type';
+import { useDebounce } from '@react-hook/debounce';
 import type { QuoteQuery } from '@umi-ag/sui-sdk';
 import { fetchQuoteFromUmi } from '@umi-ag/sui-sdk';
-import { useDebounce } from '@react-hook/debounce';
 import Decimal from 'decimal.js';
 import useSWR from 'swr';
 import { match } from 'ts-pattern';

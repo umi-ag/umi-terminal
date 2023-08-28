@@ -1,6 +1,6 @@
+import { initialCoinSelection } from '@/hooks/coinList';
+import type { Chain, CoinBalance, CoinProfile } from '@/type';
 import { create } from 'zustand';
-import type { CoinProfile, CoinBalance, Chain } from '../type';
-import { initialCoinSelection } from '../hooks/coinList';
 
 export type CoinStoreState = {
   sourceCoin: CoinProfile | null;

@@ -1,5 +1,5 @@
+import type { Chain } from '@/type';
 import { create } from 'zustand';
-import type { Chain } from '../type';
 
 export type ConfigStoreState = {
   chain: Chain;

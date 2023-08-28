@@ -1,5 +1,5 @@
+import coinLogo from '@/assets/money.svg';
 import React from 'react';
-import coinLogo from '../../assets/money.svg';
 
 export const CoinIcon: React.FC<{ iconUrl?: string | null }> = (props) => {
   const url = props.iconUrl ?? coinLogo;
