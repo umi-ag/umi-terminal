@@ -35,6 +35,7 @@ const libConfig = defineConfig({
           'react-dom': 'ReactDOM',
           'styled-components': 'styled',
         },
+        banner: '"use client";\n',
       },
     },
   },
