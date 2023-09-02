@@ -1,12 +1,10 @@
-import { Button, Header } from "ui";
-import { UmiTerminalModal } from "@umi-ag/terminal";
+import { Button, Header } from 'ui';
 
 export default function Page(): JSX.Element {
   return (
     <>
-      <Header text="Web" />
+      <Header text="Web2" />
       <Button />
-      <UmiTerminalModal isOpen />
     </>
   );
 }

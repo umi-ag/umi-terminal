@@ -8,4 +8,5 @@ export default {
     extend: {},
   },
   plugins: [],
-}
+};
+// TODO: https://stackoverflow.com/a/69999793
