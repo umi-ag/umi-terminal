@@ -1,0 +1,11 @@
+{
+  "editor.tabSize": 2,
+  "eslint.workingDirectories": [
+    "apps/web",
+    "packages/terminal"
+  ],
+  "editor.codeActionsOnSave": {
+    "source.fixAll": true,
+    "source.organizeImports": true
+  },
+}

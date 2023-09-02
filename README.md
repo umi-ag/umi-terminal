@@ -1,133 +1,81 @@
-# @umi-ag/swap-widget
+# Turborepo starter
 
-<p align="center">
-  <img src="./images/swap-interface.png" width="500" />
-</p>
+This is an official starter Turborepo.
 
-<p align="center" style="font-size: 150%">
-   <a href="https://swap-widget.umi.ag">DEMO</a>
-</p>
+## Using this example
 
-## Overview
+Run the following command:
 
-@umi-ag/swap-widget is a powerful library designed for React projects. It
-encapsulates components for a Swap interface, hooks for interacting with quote
-API and sui-coin-list API. This library simplifies the process of introducing
-cryptocurrency swapping functionalities into your React applications, enabling a
-quick and easy trading experience for your users. The primary aim is to
-facilitate a seamless integration of Umi Aggregator's functionality into users'
-websites. A live demonstration of the Swap widget can be viewed at
-[https://swap-widget.umi.ag](https://swap-widget.umi.ag).
-
-## Features
-
-1. Swap Interface: Provides a ready-made Swap component, allowing you to
-   introduce cryptocurrency swapping capabilities in your React applications
-   instantly.
-2. Quote API Hooks: Contains hooks that allow your application to interact with
-   the quote API, facilitating the discovery of efficient trading routes, akin
-   to what's offered by 1inch.
-3. Sui-coin-list API Hooks: Includes hooks to interact with the sui-coin-list
-   API, simplifying the process of fetching coin data from Sui.
-
-## Installation
-
-To install the @umi-ag/swap-widget library, run the following command in your
-project's root directory:
-
-```bash
-npm install @umi-ag/swap-widget
-# or yarn
-yarn add @umi-ag/swap-widget
-# or pnpm
-pnpm add @umi-ag/swap-widget
+```sh
+npx create-turbo@latest
 ```
 
-## Usage
+## What's inside?
 
-### Swap Interface
+This Turborepo includes the following packages/apps:
 
-```tsx
-import { UmiSwapWidget } from "./components/Swap";
-import { JsonRpcProvider, mainnetConnection } from "@mysten/sui.js";
+### Apps and Packages
 
-function App() {
-  const { currentAccount, currentWallet } = useWalletKit();
-  const provider = new JsonRpcProvider(mainnetConnection);
+- `docs`: a [Next.js](https://nextjs.org/) app
+- `web`: another [Next.js](https://nextjs.org/) app
+- `ui`: a stub React component library shared by both `web` and `docs` applications
+- `eslint-config-custom`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
+- `tsconfig`: `tsconfig.json`s used throughout the monorepo
 
-  /**
-   * You need to pass these props to the UmiSwapWidget component:
-   *
-   * type SwapWidgetProps = {
-   *    accountAddress?: string;
-   *    wallet?: {
-   *       signAndExecuteTransactionBlock: (p: any) => Promise<any>;
-   *    } | null;
-   *    provider?: JsonRpcProvider;
-   *    partnerPolicyObjectId?: string;
-   * };
-   */
+Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
 
-  return (
-    <>
-      <UmiSwapWidget
-        accountAddress={currentAccount?.address}
-        wallet={currentWallet}
-        provider={provider}
-        partnerPolicyObjectId="0x1234....abcde"
-      />
-    </>
-  );
-}
+### Utilities
 
-export default App;
+This Turborepo has some additional tools already setup for you:
+
+- [TypeScript](https://www.typescriptlang.org/) for static type checking
+- [ESLint](https://eslint.org/) for code linting
+- [Prettier](https://prettier.io) for code formatting
+
+### Build
+
+To build all apps and packages, run the following command:
+
+```
+cd my-turborepo
+pnpm build
 ```
 
-### Hooks
+### Develop
 
-Or you can use the hooks directly:
+To develop all apps and packages, run the following command:
 
-```ts
-import { useBalance, useCoinList, useQuoteApi } from "@umi-ag/swap-widget";
-
-const balances = useBalance({
-  chain, // default to Sui
-  provider: props.provider, // JsonRpcProvider
-  accountAddress: props.accountAddress, // string
-});
-
-const coinList = useCoinList({
-  chain,
-});
-
-const quote = useQuoteApi({
-  chain,
-  quoteQuery,
-});
+```
+cd my-turborepo
+pnpm dev
 ```
 
-These hooks use swr internally, so you can access the data and error like this:
+### Remote Caching
 
-```tsx
-const { data: balances, error: balanceError } = useBalance({
-  chain,
-  provider: props.provider,
-  accountAddress: props.accountAddress,
-});
+Turborepo can use a technique known as [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
+
+By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup), then enter the following commands:
+
+```
+cd my-turborepo
+npx turbo login
 ```
 
-For the detail of QuoteQuery, please refer to
-[Umi SDK](https://github.com/umi-ag/umi-sdk/blob/alpha/typescript/sui-sdk/src/types/index.ts#L67)
+This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
 
-These hooks will handle fetching data from the quote and sui-coin-list APIs,
-respectively, and will return the data and any error that occurs during the
-fetch.
+Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
 
-Please refer to our comprehensive documentation for a more in-depth guide on how
-to use the @umi-ag/swap-widget library.
+```
+npx turbo link
+```
 
-## Contributing
+## Useful Links
 
-We warmly welcome contributions to the @umi-ag/swap-widget! Please ensure that
-your code adheres to our style guidelines, and all tests pass before submitting
-a Pull Request. Thank you for your contribution to @umi-ag/swap-widget!
+Learn more about the power of Turborepo:
+
+- [Tasks](https://turbo.build/repo/docs/core-concepts/monorepos/running-tasks)
+- [Caching](https://turbo.build/repo/docs/core-concepts/caching)
+- [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching)
+- [Filtering](https://turbo.build/repo/docs/core-concepts/monorepos/filtering)
+- [Configuration Options](https://turbo.build/repo/docs/reference/configuration)
+- [CLI Usage](https://turbo.build/repo/docs/reference/command-line-reference)
