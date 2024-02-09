@@ -1,4 +1,5 @@
 {
+  "name": "umi-terminal",
   "private": true,
   "scripts": {
     "build": "turbo run build",
@@ -12,6 +13,9 @@
     "tsconfig": "workspace:*",
     "turbo": "latest"
   },
-  "packageManager": "pnpm@8.6.10",
-  "name": "umi-terminal"
+  "packageManager": "bun@1.0.19",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ]
 }
