@@ -1,8 +1,4 @@
 {
-  "eslint.workingDirectories": [
-    "apps/web",
-    "packages/terminal"
-  ],
   "typescript.tsdk": "node_modules/typescript/lib",
   "typescript.enablePromptUseWorkspaceTsdk": true,
   "tailwindCSS.experimental.classRegex": [

@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import refreshIcon from '@/assets/refresh.svg';
 import umiLogo from '@/assets/umi.jpeg';
 import { CoinIcon } from '@/components/CoinIcon';
