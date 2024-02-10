@@ -40,7 +40,8 @@ export type UmiTerminalProps = {
    * The wallet to use for the swap.
    */
   wallet?: {
-    signAndExecuteTransactionBlock: (p: never) => Promise<unknown>;
+    // biome-ignore lint/suspicious/noExplicitAny: any
+    signAndExecuteTransactionBlock: (p: any) => Promise<any>;
   } | null;
   /**
    * Sui Client
