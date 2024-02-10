@@ -4,7 +4,7 @@ import './App.scss';
 import { UmiTerminal, UmiTerminalModal } from './components/Terminal';
 
 function App() {
-  const { currentAccount, currentWallet } = useWalletKit();
+  const { currentAccount, signAndExecuteTransactionBlock } = useWalletKit();
   const provider = new SuiClient({
     url: getFullnodeUrl('mainnet'),
   });
@@ -15,7 +15,7 @@ function App() {
         <div className="mx-auto my-0 max-w-[500px]">
           <UmiTerminal
             accountAddress={currentAccount?.address}
-            wallet={currentWallet}
+            wallet={{ signAndExecuteTransactionBlock }}
             provider={provider}
           />
         </div>
