@@ -9,7 +9,7 @@ const MODE = process.env.MODE ?? 'lib';
 const resolve: UserConfig['resolve'] = {
   alias: {
     '@': path.resolve(__dirname, 'src'),
-  }
+  },
 };
 
 const libConfig = defineConfig({
@@ -47,7 +47,7 @@ const uiConfig = defineConfig({
   build: {
     outDir: 'dist',
     emptyOutDir: true,
-  }
+  },
 });
 
 export default MODE === 'lib' ? libConfig : uiConfig;

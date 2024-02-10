@@ -1,4 +1,4 @@
-# @umi-ag/swap-widget
+# @umi-ag/terminal
 
 <p align="center">
   <img src="./images/swap-interface.png" width="500" />
