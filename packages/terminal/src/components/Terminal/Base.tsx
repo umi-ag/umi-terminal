@@ -15,16 +15,12 @@ import './style.scss';
 const Header: React.FC<UmiTerminalProps> = (props) => {
   const { setChain, reloadBalances, reloadQuote } = useSwapContext(props);
 
-  const refresh = debounce(
-    () => Promise.allSettled([reloadBalances(), reloadQuote()]),
-    1000
-  );
+  const refresh = debounce(() => Promise.allSettled([reloadBalances(), reloadQuote()]), 1000);
 
   return (
     <div className="flex items-center justify-between mb-4">
       <div className="flex items-center justify-between gap-4">
-        <img src={umiLogo} alt="umi logo" className="w-8 h-8 rounded-full" />{' '}
-        Umi.ag
+        <img src={umiLogo} alt="umi logo" className="w-8 h-8 rounded-full" /> Umi.ag
       </div>
       <div className="flex justify-between gap-4">
         <select
@@ -76,7 +72,7 @@ const SourceInput: React.FC<UmiTerminalProps> = (props) => {
         )}
       </div>
       <div className="flex items-center justify-between mb-2">
-        <div className="w-8 h-8 mr-2">
+        <div className="min-w-8 min-h-8 mr-2">
           <CoinIcon iconUrl={sourceCoin?.iconUrl} />
         </div>
 
@@ -103,14 +99,13 @@ const SourceInput: React.FC<UmiTerminalProps> = (props) => {
 };
 
 const TargetInput: React.FC<UmiTerminalProps> = (props) => {
-  const { targetCoin, targetVolume, setTargetCoin, coinList } =
-    useSwapContext(props);
+  const { targetCoin, targetVolume, setTargetCoin, coinList } = useSwapContext(props);
 
   return (
     <div className="px-4 py-2 mb-4 bg-white border-slate-200 border-[1px] rounded-xl">
       <p className="mb-2 text-left text-gray-500">To</p>
       <div className="flex items-center justify-between mb-2">
-        <div className="w-8 h-8 mr-2">
+        <div className="min-w-8 min-h-8 mr-2">
           <CoinIcon iconUrl={targetCoin?.iconUrl} />
         </div>
 
