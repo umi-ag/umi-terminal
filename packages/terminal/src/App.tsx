@@ -8,9 +8,9 @@ function App() {
   const provider = new JsonRpcProvider(mainnetConnection);
 
   return (
-    <>
+    <div className="bg-black">
       <div className="p-16 w-100vw h-100vh">
-        <div className="mx-auto my-0 w-[600px]">
+        <div className="mx-auto my-0 w-[400px]">
           <UmiTerminal
             accountAddress={currentAccount?.address}
             wallet={currentWallet}
@@ -24,7 +24,7 @@ function App() {
       <div className="grid place-items-center">
         <ConnectButton />
       </div>
-    </>
+    </div>
   );
 }
 
